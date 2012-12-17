@@ -11,7 +11,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class simplehomes extends JavaPlugin{
-static final Logger logger = Logger.getLogger("Minecraft");
+    static final Logger logger = Logger.getLogger("Minecraft");
+    public static boolean noperm;
+
 
     @Override
     public void onEnable() {
@@ -33,6 +35,10 @@ static final Logger logger = Logger.getLogger("Minecraft");
     String commandLabel, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
+            if(noperm) {
+                sender.sendMessage(ChatColor.RED + "Sorry! You don't have permission to do that!");
+                noperm = false;
+            }
             if (commandLabel.equalsIgnoreCase("sethome")) {
                 if (sender.hasPermission(new Permissions().canUseHomes)) {
                     getConfig().set(player.getName() + ".x",
@@ -44,7 +50,7 @@ static final Logger logger = Logger.getLogger("Minecraft");
                     saveConfig();
                     sender.sendMessage(ChatColor.YELLOW + "Home set.");
                 } else {
-                    sender.sendMessage(ChatColor.RED + "Sorry! You don't have permission to do that!");
+                    noperm = true;
                 }
             } else if(commandLabel.equalsIgnoreCase("home")) {
                 if(args.length == 0) {
@@ -55,7 +61,7 @@ static final Logger logger = Logger.getLogger("Minecraft");
                         player.teleport(new Location(player.getWorld(), x, y, z));
                         sender.sendMessage(ChatColor.YELLOW + "Teleported.");
                     } else {
-                        sender.sendMessage(ChatColor.RED + "Sorry! You don't have permission to do that!");
+                        noperm = true;
                     }
                 } else if(args.length == 1) {
                     if (sender.hasPermission(new Permissions().canTeleportOther)) {
@@ -65,7 +71,7 @@ static final Logger logger = Logger.getLogger("Minecraft");
                         player.teleport(new Location(player.getWorld(), x, y, z));
                         sender.sendMessage(ChatColor.YELLOW + "Teleported to " + args[0] + "'s home.");
                     } else {
-                        sender.sendMessage(ChatColor.RED + "Sorry! You don't have permission to do that!");
+                        noperm = true;
                     }
                 }
             }
