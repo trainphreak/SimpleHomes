@@ -16,9 +16,9 @@ permissions:
     children:
       simplehomes.homes: true
       simplehomes.otherhomes: true
-simplehomes.homes:
+  simplehomes.homes:
     description: Allows you to set a home and teleport to it.
     default: true
-simplehomes.otherhomes:
+  simplehomes.otherhomes:
     description: Allows you to teleport to other people's homes.
     default: op
