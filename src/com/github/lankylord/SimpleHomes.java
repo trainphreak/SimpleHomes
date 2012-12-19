@@ -28,45 +28,45 @@ public class SimpleHomes extends JavaPlugin{
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    switch (command.getName().toLowerCase()) {
-      case "sethome":
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (sender.hasPermission("simplehomes.homes")) {
-            getConfig().set(player.getName() + ".x",
-                            player.getLocation().getBlockX());
-                    getConfig().set(player.getName() + ".y",
-                            player.getLocation().getBlockY());
-                    getConfig().set(player.getName() + ".z",
-                            player.getLocation().getBlockZ());
-                    saveConfig();
-                    sender.sendMessage(ChatColor.YELLOW + "Home set.");
-                    break;
-        }
-        }
-          case "home":
-        if (sender instanceof Player) {
-           Player player = (Player) sender;
-           if(args.length == 0) {
-               if (sender.hasPermission("simplehomes.homes")) {
-                        int x = getConfig().getInt(player.getName() + ".x"), y = getConfig()
-                                .getInt(player.getName() + ".y"), z = getConfig()
-                                .getInt(player.getName() + ".z");
-                        player.teleport(new Location(player.getWorld(), x, y, z));
-                        sender.sendMessage(ChatColor.YELLOW + "Teleported.");
-               }
-           } else if(args.length == 1) {
-               if (sender.hasPermission("simplehomes.otherhomes")) {
-                        int x = getConfig().getInt(args[0] + ".x"), y = getConfig()
-                                .getInt(args[0] + ".y"), z = getConfig()
-                                .getInt(args[0] + ".z");
-                        player.teleport(new Location(player.getWorld(), x, y, z));
-                        sender.sendMessage(ChatColor.YELLOW + "Teleported to " + args[0] + "'s home.");
+        switch (command.getName().toLowerCase()) {
+            case "sethome":
+                if (sender instanceof Player) {
+                    Player player = (Player) sender;
+                    if (sender.hasPermission("simplehomes.homes")) {
+                        getConfig().set(player.getName() + ".x",
+                                player.getLocation().getBlockX());
+                        getConfig().set(player.getName() + ".y",
+                                player.getLocation().getBlockY());
+                        getConfig().set(player.getName() + ".z",
+                                player.getLocation().getBlockZ());
+                        saveConfig();
+                        sender.sendMessage(ChatColor.YELLOW + "Home set.");
                         break;
                     }
+                }
+            case "home":
+                if (sender instanceof Player) {
+                    Player player = (Player) sender;
+                    if(args.length == 0) {
+                        if (sender.hasPermission("simplehomes.homes")) {
+                            int x = getConfig().getInt(player.getName() + ".x"), y = getConfig()
+                                    .getInt(player.getName() + ".y"), z = getConfig()
+                                    .getInt(player.getName() + ".z");
+                            player.teleport(new Location(player.getWorld(), x, y, z));
+                            sender.sendMessage(ChatColor.YELLOW + "Teleported.");
+                        }
+                    } else if(args.length == 1) {
+                        if (sender.hasPermission("simplehomes.otherhomes")) {
+                            int x = getConfig().getInt(args[0] + ".x"), y = getConfig()
+                                    .getInt(args[0] + ".y"), z = getConfig()
+                                    .getInt(args[0] + ".z");
+                            player.teleport(new Location(player.getWorld(), x, y, z));
+                            sender.sendMessage(ChatColor.YELLOW + "Teleported to " + args[0] + "'s home.");
+                            break;
+                        }
+                    }
+                }
         }
-        }
-    }
         return false;
     }
 }
