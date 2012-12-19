@@ -1,10 +1,24 @@
 name: SimpleHomes
-main: com.github.lankylord.simplehomes
+main: com.github.lankylord.SimpleHomes
 version: 1.1
-description: >
-             A simple no-nonsense plugin, that allows people to set a home and teleport back to it.
+description: A simple plugin to implement homes on a server.
 commands:
   sethome:
     description: Set your home.
+    permission: simplehomes.homes
   home:
     description: Teleport back to your set home.
+    permission: simplehomes.homes
+    
+permissions:
+  simplehomes.*:
+    description: All SimpleHomes permissions
+    children:
+      simplehomes.homes: true
+      simplehomes.otherhomes: true
+simplehomes.homes:
+    description: Allows you to set a home and teleport to it.
+    default: true
+simplehomes.otherhomes:
+    description: Allows you to teleport to other people's homes.
+    default: op
