@@ -1,5 +1,5 @@
 name: SimpleHomes
-version: 1.2
+version: 1.3
 description: A simple plugin to implement homes on a server.
 author: Lanky_Lord
 website: https://github.com/LankyLord/SimpleHomes
@@ -15,16 +15,23 @@ commands:
   home:
     description: Teleport back to your set home.
     permission: simplehomes.homes
+  otherhome:
+    description: Teleport to another player's sethome.
+    permission: simplehomes.otherhomes
     
 permissions:
   simplehomes.*:
     description: All SimpleHomes permissions
     children:
       simplehomes.homes: true
+      simplehomes.multihomes: true
       simplehomes.otherhomes: true
   simplehomes.homes:
     description: Allows you to set a home and teleport to it.
     default: true
+  simplehomes.multihomes:
+    description: Allows you to set multiple homes.
+    default: op
   simplehomes.otherhomes:
     description: Allows you to teleport to other people's homes.
     default: op
