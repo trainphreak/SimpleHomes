@@ -1,13 +1,12 @@
 name: SimpleHomes
 version: 1.3
-description: A simple plugin to implement homes on a server.
+description: Plugin that allows players to use homes.
 author: Lanky_Lord
 website: https://github.com/LankyLord/SimpleHomes
 
 main: com.github.lankylord.SimpleHomes
 database: false
 
-description: A simple plugin to implement homes on a server.
 commands:
   sethome:
     description: Set your home.
