@@ -10,7 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class SimpleHomes extends JavaPlugin{
     static final Logger logger = Logger.getLogger("Minecraft");
-    public static boolean noperm;
 
 
     @Override
