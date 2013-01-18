@@ -30,7 +30,7 @@ permissions:
     default: true
   simplehomes.multihomes:
     description: Allows you to set multiple homes.
-    default: op
+    default: true
   simplehomes.otherhomes:
     description: Allows you to teleport to other people's homes.
     default: op
