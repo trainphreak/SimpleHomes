@@ -4,7 +4,7 @@ description: Plugin that allows players to use homes.
 author: Lanky_Lord
 website: https://github.com/LankyLord/SimpleHomes
 
-main: com.github.lankylord.SimpleHomes
+main: com.github.lankylord.SimpleHomes.SimpleHomes
 database: false
 
 commands:

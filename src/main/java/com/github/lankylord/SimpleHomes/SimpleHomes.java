@@ -1,10 +1,17 @@
 package com.github.lankylord.SimpleHomes;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,12 +23,14 @@ public class SimpleHomes extends JavaPlugin{
     public void onEnable() {
         logger.info("SimpleHomes Enabled!");
         saveConfig();
+        saveHomes();
     }
 
     @Override
     public void onDisable() {
         logger.info("SimpleHomes Disabled!");
         saveConfig();
+        saveHomes();
     }
 
     @Override
@@ -32,25 +41,29 @@ public class SimpleHomes extends JavaPlugin{
                     Player player = (Player) sender;
                     if(args.length == 0) {
                         if (sender.hasPermission("simplehomes.homes")) {
-                            getConfig().set(player.getName() + ".x",
+                            getHomes().set(player.getName() + ".world",
+                                    player.getWorld().getName());
+                            getHomes().set(player.getName() + ".x",
                                     player.getLocation().getBlockX());
-                            getConfig().set(player.getName() + ".y",
+                            getHomes().set(player.getName() + ".y",
                                     player.getLocation().getBlockY());
-                            getConfig().set(player.getName() + ".z",
+                            getHomes().set(player.getName() + ".z",
                                     player.getLocation().getBlockZ());
-                            saveConfig();
+                            saveHomes();
                             sender.sendMessage(ChatColor.YELLOW + "Home set.");
                             break;
                         }
                     } else if(args.length == 1) {
                         if (sender.hasPermission("simplehomes.homes")) {
-                            getConfig().set(player.getName() + "." + args[0] + ".x",
+                            getHomes().set(player.getName() + "." + args[0] + ".world",
+                                    player.getWorld().getName());
+                            getHomes().set(player.getName() + "." + args[0] + ".x",
                                     player.getLocation().getBlockX());
-                            getConfig().set(player.getName() + "." + args[0] + ".y",
+                            getHomes().set(player.getName() + "." + args[0] + ".y",
                                     player.getLocation().getBlockY());
-                            getConfig().set(player.getName() + "." + args[0] + ".z",
+                            getHomes().set(player.getName() + "." + args[0] + ".z",
                                     player.getLocation().getBlockZ());
-                            saveConfig();
+                            saveHomes();
                             sender.sendMessage(ChatColor.YELLOW + "Home set.");
                             break;
                         }
@@ -61,18 +74,20 @@ public class SimpleHomes extends JavaPlugin{
                     Player player = (Player) sender;
                     if(args.length == 0) {
                         if (sender.hasPermission("simplehomes.homes")) {
-                            int x = getConfig().getInt(player.getName() + ".x"), y = getConfig()
-                                    .getInt(player.getName() + ".y"), z = getConfig()
-                                    .getInt(player.getName() + ".z");
-                            player.teleport(new Location(player.getWorld(), x, y, z));
+                            String w = getHomes().getString(player.getName() + ".world");
+                            int x = getHomes().getInt(player.getName() + ".x"),
+                                y = getHomes().getInt(player.getName() + ".y"),
+                                z = getHomes().getInt(player.getName() + ".z");
+                            player.teleport(new Location(Bukkit.getWorld(w), x, y, z));
                             sender.sendMessage(ChatColor.YELLOW + "Teleported.");
                         }
                     } else if(args.length == 1) {
                         if (sender.hasPermission("simplehomes.multihomes")) {
-                            int x = getConfig().getInt(player.getName() + "." + args[0] + ".x"), y = getConfig()
-                                    .getInt(player.getName() + "." + args[0] + ".y"), z = getConfig()
-                                    .getInt(player.getName() + "." + args[0] + ".z");
-                            player.teleport(new Location(player.getWorld(), x, y, z));
+                            String w = getHomes().getString(player.getName() + "." + args[0] + ".world");
+                            int x = getHomes().getInt(player.getName() + "." + args[0] + ".x"),
+                                y = getHomes().getInt(player.getName() + "." + args[0] + ".y"),
+                                z = getHomes().getInt(player.getName() + "." + args[0] + ".z");
+                            player.teleport(new Location(Bukkit.getWorld(w), x, y, z));
                             sender.sendMessage(ChatColor.YELLOW + "Teleported.");
                             break;
                         }
@@ -83,22 +98,58 @@ public class SimpleHomes extends JavaPlugin{
                     Player player = (Player) sender;
                     if(args.length == 1) {
                         if (sender.hasPermission("simplehomes.otherhomes")) {
-                            int x = getConfig().getInt(args[0] + ".x"), y = getConfig()
-                                    .getInt(args[0] + ".y"), z = getConfig()
-                                    .getInt(args[0] + ".z");
-                            player.teleport(new Location(player.getWorld(), x, y, z));
+                            String w = getHomes().getString(args[0] + ".world");
+                            int x = getHomes().getInt(args[0] + ".x"), 
+                                y = getHomes().getInt(args[0] + ".y"), 
+                                z = getHomes().getInt(args[0] + ".z");
+                            player.teleport(new Location(Bukkit.getWorld(w), x, y, z));
                             sender.sendMessage(ChatColor.YELLOW + "Teleported to " + args[0] + "'s home.");
                         }
                     } else if(args.length == 2) {
                         if (sender.hasPermission("simplehomes.otherhomes")) {
-                            int x = getConfig().getInt(args[0] + "." + args[1] + ".x"), y = getConfig()
-                                    .getInt(args[0] + "." + args[1] + ".y"), z = getConfig()
-                                    .getInt(args[0] + "." + args[1] + ".z");
-                            player.teleport(new Location(player.getWorld(), x, y, z));
+                            String w = getHomes().getString(args[0] + "." + args[1] + ".world");
+                            int x = getHomes().getInt(args[0] + "." + args[1] + ".x"),
+                                y = getHomes().getInt(args[0] + "." + args[1] + ".y"), 
+                                z = getHomes().getInt(args[0] + "." + args[1] + ".z");
+                            player.teleport(new Location(Bukkit.getWorld(w), x, y, z));
                             sender.sendMessage(ChatColor.YELLOW + "Teleported to " + args[0] + "'s home.");
                         }
                     }
                 }
         } return false;
+    }
+    
+    private FileConfiguration Homes = null;
+    private File HomesFile = null;
+    
+    public void reloadHomes() {
+        if (HomesFile == null) {
+        HomesFile = new File(getDataFolder(), "Homes.yml");
+        }
+        Homes = YamlConfiguration.loadConfiguration(HomesFile);
+     
+        InputStream defHomes = this.getResource("Homes.yml");
+        if (defHomes != null) {
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defHomes);
+            Homes.setDefaults(defConfig);
+        }
+    }
+    
+    public FileConfiguration getHomes() {
+        if (Homes == null) {
+            this.reloadHomes();
+        }
+        return Homes;
+    }
+    
+    public void saveHomes() {
+        if (Homes == null || HomesFile == null) {
+        return;
+        }
+        try {
+            getHomes().save(HomesFile);
+        } catch (IOException ex) {
+            this.getLogger().log(Level.SEVERE, "Could not save config to " + HomesFile, ex);
+        }
     }
 }
