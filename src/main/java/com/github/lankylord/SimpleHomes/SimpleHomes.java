@@ -1,5 +1,6 @@
 package com.github.lankylord.SimpleHomes;
 
+import com.github.lankylord.SimpleHomes.commands.HomeCommand;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +25,8 @@ public class SimpleHomes extends JavaPlugin {
         logger.info("SimpleHomes Enabled!");
         saveConfig();
         saveHomes();
+        
+        getCommand("home").setExecutor(new HomeCommand(this));
     }
 
     @Override
@@ -66,28 +69,6 @@ public class SimpleHomes extends JavaPlugin {
                                     player.getLocation().getBlockZ());
                             saveHomes();
                             sender.sendMessage(ChatColor.YELLOW + "Home set.");
-                            break;
-                        }
-                    }
-
-                case "home":
-                    if (args.length == 0) {
-                        if (sender.hasPermission("simplehomes.homes")) {
-                            String w = getHomes().getString(player.getName() + ".world");
-                            int x = getHomes().getInt(player.getName() + ".x"),
-                                    y = getHomes().getInt(player.getName() + ".y"),
-                                    z = getHomes().getInt(player.getName() + ".z");
-                            player.teleport(new Location(Bukkit.getWorld(w), x, y, z));
-                            sender.sendMessage(ChatColor.YELLOW + "Teleported.");
-                        }
-                    } else if (args.length == 1) {
-                        if (sender.hasPermission("simplehomes.multihomes")) {
-                            String w = getHomes().getString(player.getName() + "." + args[0] + ".world");
-                            int x = getHomes().getInt(player.getName() + "." + args[0] + ".x"),
-                                    y = getHomes().getInt(player.getName() + "." + args[0] + ".y"),
-                                    z = getHomes().getInt(player.getName() + "." + args[0] + ".z");
-                            player.teleport(new Location(Bukkit.getWorld(w), x, y, z));
-                            sender.sendMessage(ChatColor.YELLOW + "Teleported.");
                             break;
                         }
                     }
