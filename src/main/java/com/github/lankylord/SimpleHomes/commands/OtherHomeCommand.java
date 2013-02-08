@@ -58,7 +58,7 @@ public class OtherHomeCommand implements CommandExecutor {
             
             String target = args[0].toLowerCase();
             
-            if (instance.getHomes().contains(target.toLowerCase() + "." + home)) {
+            if (instance.getHomes().contains(target + "." + home)) {
                 ConfigurationSection homes = instance.getHomes().getConfigurationSection(target + "." + home);
                 String w = homes.getString("world");
                 int x = homes.getInt("x"),
