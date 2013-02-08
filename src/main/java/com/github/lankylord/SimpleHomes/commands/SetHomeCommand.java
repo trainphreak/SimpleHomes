@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2012 cedeel.
+ * Copyright (c) 2013 cedeel.
  * All rights reserved.
  * 
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -27,7 +27,6 @@
 package com.github.lankylord.SimpleHomes.commands;
 
 import com.github.lankylord.SimpleHomes.SimpleHomes;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -40,11 +39,11 @@ import org.bukkit.entity.Player;
  *
  * @author cedeel
  */
-public class HomeCommand implements CommandExecutor {
+public class SetHomeCommand implements CommandExecutor {
 
     private SimpleHomes instance;
 
-    public HomeCommand(SimpleHomes instance) {
+    public SetHomeCommand(SimpleHomes instance) {
         this.instance = instance;
     }
 
@@ -52,23 +51,34 @@ public class HomeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmnd, String label, String[] args) {
         if (sender instanceof Player && sender.hasPermission("simplehomes.homes")) {
             Player player = (Player) sender;
+            if (instance.getHomes().get(player.getName().toLowerCase()) == null) {
+                instance.getHomes().createSection(player.getName().toLowerCase());
+            }
+
+            Location coords = player.getLocation();
 
             String homeName = "default";
             if (args.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
                 homeName = args[0].toLowerCase();
             }
-
-            if (instance.getHomes().contains(player.getName().toLowerCase() + "." + homeName)) {
-                ConfigurationSection home = instance.getHomes().getConfigurationSection(player.getName().toLowerCase() + "." + homeName);
-                String w = home.getString("world");
-                int x = home.getInt("x"),
-                        y = home.getInt("y"),
-                        z = home.getInt("z");
-                player.teleport(new Location(Bukkit.getWorld(w), x, y, z));
-                player.sendMessage(ChatColor.YELLOW + "Teleported.");
-                return true;
+            
+            String section = player.getName().toLowerCase() + "." + homeName;
+            if (instance.getHomes().get(section) == null) {
+                instance.getHomes().createSection(section);
             }
+
+            ConfigurationSection home = instance.getHomes().getConfigurationSection(section);
+
+            home.set("world", player.getWorld().getName());
+            home.set("x", coords.getBlockX());
+            home.set("y", coords.getBlockY());
+            home.set("z", coords.getBlockZ());
+            instance.saveHomes();
+            sender.sendMessage(ChatColor.YELLOW + "Home set.");
+            
+            return true;
         }
         return false;
+
     }
 }
