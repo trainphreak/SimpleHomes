@@ -54,12 +54,12 @@ public class OtherHomeCommand implements CommandExecutor {
             Player p = (Player) sender;
             String home = "default";
             if (args.length == 2)
-                home = args[1];
+                home = args[1].toLowerCase();
             
-            String target = args[0];
+            String target = args[0].toLowerCase();
             
             if (instance.getHomes().contains(target.toLowerCase() + "." + home)) {
-                ConfigurationSection homes = instance.getHomes().getConfigurationSection(target.toLowerCase() + "." + home);
+                ConfigurationSection homes = instance.getHomes().getConfigurationSection(target + "." + home);
                 String w = homes.getString("world");
                 int x = homes.getInt("x"),
                         y = homes.getInt("y"),
