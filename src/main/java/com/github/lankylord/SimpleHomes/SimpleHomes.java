@@ -19,7 +19,7 @@ public class SimpleHomes extends JavaPlugin {
         logger.info("SimpleHomes Enabled!");
         saveConfig();
         saveHomes();
-        
+
         getCommand("home").setExecutor(new HomeCommand(this));
         getCommand("sethome").setExecutor(new SetHomeCommand(this));
         getCommand("otherhome").setExecutor(new OtherHomeCommand(this));
@@ -31,7 +31,6 @@ public class SimpleHomes extends JavaPlugin {
         saveConfig();
         saveHomes();
     }
-    
     private FileConfiguration Homes = null;
     private File HomesFile = null;
 

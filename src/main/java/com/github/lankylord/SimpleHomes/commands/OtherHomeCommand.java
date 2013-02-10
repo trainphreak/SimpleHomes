@@ -41,9 +41,9 @@ import org.bukkit.entity.Player;
  * @author cedeel
  */
 public class OtherHomeCommand implements CommandExecutor {
-    
+
     private SimpleHomes instance;
-    
+
     public OtherHomeCommand(SimpleHomes instance) {
         this.instance = instance;
     }
@@ -53,11 +53,12 @@ public class OtherHomeCommand implements CommandExecutor {
         if (sender instanceof Player && sender.hasPermission("simplehomes.otherhomes")) {
             Player p = (Player) sender;
             String home = "default";
-            if (args.length == 2)
+            if (args.length == 2) {
                 home = args[1].toLowerCase();
-            
+            }
+
             String target = args[0].toLowerCase();
-            
+
             if (instance.getHomes().contains(target + "." + home)) {
                 ConfigurationSection homes = instance.getHomes().getConfigurationSection(target + "." + home);
                 String w = homes.getString("world");

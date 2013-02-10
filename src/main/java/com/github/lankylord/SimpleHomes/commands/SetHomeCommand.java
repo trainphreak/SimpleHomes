@@ -61,7 +61,7 @@ public class SetHomeCommand implements CommandExecutor {
             if (args.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
                 homeName = args[0].toLowerCase();
             }
-            
+
             String section = player.getName().toLowerCase() + "." + homeName;
             if (instance.getHomes().get(section) == null) {
                 instance.getHomes().createSection(section);
@@ -75,7 +75,7 @@ public class SetHomeCommand implements CommandExecutor {
             home.set("z", coords.getBlockZ());
             instance.saveHomes();
             sender.sendMessage(ChatColor.YELLOW + "Home set.");
-            
+
             return true;
         }
         return false;
