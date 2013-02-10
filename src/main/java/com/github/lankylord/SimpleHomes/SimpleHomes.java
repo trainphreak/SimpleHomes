@@ -17,12 +17,12 @@ public class SimpleHomes extends JavaPlugin {
     @Override
     public void onEnable() {
         logger.info("SimpleHomes Enabled!");
+        loadCommands();
         saveConfig();
         saveHomes();
-
-        getCommand("home").setExecutor(new HomeCommand(this));
-        getCommand("sethome").setExecutor(new SetHomeCommand(this));
-        getCommand("otherhome").setExecutor(new OtherHomeCommand(this));
+        if (getConfig().getBoolean("AutoUpdater.Enabled", true)) {
+            Updater updater = new Updater(this, "simplehomes", this.getFile(), Updater.UpdateType.DEFAULT, true);
+        }
     }
 
     @Override
@@ -63,5 +63,11 @@ public class SimpleHomes extends JavaPlugin {
         } catch (IOException ex) {
             this.getLogger().log(Level.SEVERE, "Could not save config to " + HomesFile, ex);
         }
+    }
+
+    public void loadCommands() {
+        getCommand("home").setExecutor(new HomeCommand(this));
+        getCommand("sethome").setExecutor(new SetHomeCommand(this));
+        getCommand("otherhome").setExecutor(new OtherHomeCommand(this));
     }
 }
