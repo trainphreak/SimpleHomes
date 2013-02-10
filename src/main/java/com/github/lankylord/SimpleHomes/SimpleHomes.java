@@ -16,12 +16,13 @@ public class SimpleHomes extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        logger.info("SimpleHomes Enabled!");
+        logger.info("[SimpleHomes] SimpleHomes Enabled!");
         loadCommands();
-        saveConfig();
+        saveDefaultConfig();
         saveHomes();
         if (getConfig().getBoolean("AutoUpdater.Enabled", true)) {
             Updater updater = new Updater(this, "simplehomes", this.getFile(), Updater.UpdateType.DEFAULT, true);
+            logger.info("[SimpleHomes] AutoUpdater Enabled.");
         }
     }
 
