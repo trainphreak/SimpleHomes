@@ -24,6 +24,11 @@ public class SimpleHomes extends JavaPlugin {
             Updater updater = new Updater(this, "simplehomes", this.getFile(), Updater.UpdateType.DEFAULT, true);
             logger.info("[SimpleHomes] AutoUpdater Enabled.");
         }
+        try {
+            MetricsLite metrics = new MetricsLite(this);
+            metrics.start();
+        } catch (IOException e) {
+        }
     }
 
     @Override
