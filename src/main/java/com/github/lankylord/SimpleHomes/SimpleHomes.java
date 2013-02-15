@@ -76,5 +76,6 @@ public class SimpleHomes extends JavaPlugin {
         getCommand("sethome").setExecutor(new SetHomeCommand(this));
         getCommand("otherhome").setExecutor(new OtherHomeCommand(this));
         getCommand("homelist").setExecutor(new HomeListCommand(this));
+        getCommand("delhome").setExecutor(new DeleteHomeCommand(this));
     }
 }

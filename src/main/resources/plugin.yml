@@ -1,5 +1,5 @@
 name: SimpleHomes
-version: 1.5
+version: 1.6
 description: Plugin that allows players to use homes.
 author: Lanky_Lord
 website: https://github.com/LankyLord/SimpleHomes
@@ -20,6 +20,9 @@ commands:
   homelist:
     description: Get a list of homes
     permission: simplehomes.multihomes
+  delhome:
+    description: Delete a home
+    permission: simplehomes.homes
     
 permissions:
   simplehomes.*:

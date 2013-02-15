@@ -331,18 +331,14 @@ public final class MetricsLite {
         }
 
         connection.setDoOutput(true);
-
-        // Write the data
-        final OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-        writer.write(data.toString());
-        writer.flush();
-
-        // Now read the response
-        final BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        final String response = reader.readLine();
-
-        // close resources
-        writer.close();
+        final BufferedReader reader;
+        final String response;
+        try (OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream())) {
+            writer.write(data.toString());
+            writer.flush();
+            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            response = reader.readLine();
+        }
         reader.close();
 
         if (response == null || response.startsWith("ERR")) {
