@@ -51,32 +51,34 @@ public class SetHomeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmnd, String label, String[] args) {
         if (sender instanceof Player && sender.hasPermission("simplehomes.homes")) {
             Player player = (Player) sender;
-            if (instance.getHomes().get(player.getName().toLowerCase()) == null) {
+            if (instance.getHomes().get(player.getName().toLowerCase()) == null)
                 instance.getHomes().createSection(player.getName().toLowerCase());
+
+            int homes = instance.getHomes().getConfigurationSection(player.getName().toLowerCase()).getKeys(false).size();
+            if (homes < instance.getConfig().getInt("MaxHomes")) {
+                Location coords = player.getLocation();
+
+                String homeName = "default";
+                if (args.length == 1 && sender.hasPermission("simplehomes.multihomes"))
+                    homeName = args[0].toLowerCase();
+
+                String section = player.getName().toLowerCase() + "." + homeName;
+                if (instance.getHomes().get(section) == null)
+                    instance.getHomes().createSection(section);
+
+                ConfigurationSection home = instance.getHomes().getConfigurationSection(section);
+
+                home.set("world", player.getWorld().getName());
+                home.set("x", coords.getBlockX());
+                home.set("y", coords.getBlockY());
+                home.set("z", coords.getBlockZ());
+                instance.saveHomes();
+                sender.sendMessage(ChatColor.YELLOW + "Home set.");
+
+                return true;
+            } else {
+                player.sendMessage("Home cannot be set. The max of " + instance.getConfig().getInt("MaxHomes") + " has been reached.");
             }
-
-            Location coords = player.getLocation();
-
-            String homeName = "default";
-            if (args.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
-                homeName = args[0].toLowerCase();
-            }
-
-            String section = player.getName().toLowerCase() + "." + homeName;
-            if (instance.getHomes().get(section) == null) {
-                instance.getHomes().createSection(section);
-            }
-
-            ConfigurationSection home = instance.getHomes().getConfigurationSection(section);
-
-            home.set("world", player.getWorld().getName());
-            home.set("x", coords.getBlockX());
-            home.set("y", coords.getBlockY());
-            home.set("z", coords.getBlockZ());
-            instance.saveHomes();
-            sender.sendMessage(ChatColor.YELLOW + "Home set.");
-
-            return true;
         }
         return false;
 
