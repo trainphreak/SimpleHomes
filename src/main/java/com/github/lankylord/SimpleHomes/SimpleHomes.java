@@ -17,9 +17,11 @@ public class SimpleHomes extends JavaPlugin {
     @Override
     public void onEnable() {
         logger.info("[SimpleHomes] SimpleHomes Enabled!");
+        this.getConfig().options().copyDefaults(true);
         loadCommands();
         saveDefaultConfig();
         saveHomes();
+        saveConfig();
         if (getConfig().getBoolean("AutoUpdater.Enabled", true)) {
             Updater updater = new Updater(this, "simplehomes", this.getFile(), Updater.UpdateType.DEFAULT, true);
             logger.info("[SimpleHomes] AutoUpdater Enabled.");
@@ -34,7 +36,6 @@ public class SimpleHomes extends JavaPlugin {
     @Override
     public void onDisable() {
         logger.info("SimpleHomes Disabled!");
-        saveConfig();
         saveHomes();
     }
     private FileConfiguration Homes = null;
