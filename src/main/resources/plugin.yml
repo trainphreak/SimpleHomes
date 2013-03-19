@@ -1,7 +1,7 @@
 name: SimpleHomes
-version: 1.6.1
+version: maven-version-number
 description: Plugin that allows players to use homes.
-author: Lanky_Lord
+authors: [Lanky_Lord, cedeel]
 website: https://github.com/LankyLord/SimpleHomes
 
 main: com.github.lankylord.SimpleHomes.SimpleHomes
