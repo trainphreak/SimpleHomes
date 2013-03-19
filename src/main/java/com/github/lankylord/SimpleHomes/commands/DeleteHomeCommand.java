@@ -48,7 +48,7 @@ public class DeleteHomeCommand implements CommandExecutor{
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player && sender.hasPermission("simplehomes.home")) {
+        if (sender instanceof Player && sender.hasPermission("simplehomes.homes")) {
             Player player = (Player) sender;
 
             String homeName = "default";
