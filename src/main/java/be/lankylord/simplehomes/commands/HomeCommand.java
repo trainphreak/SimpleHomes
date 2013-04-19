@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2013 cedeel.
+ * Copyright (c) 2012 cedeel.
  * All rights reserved.
  * 
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -24,10 +24,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.lankylord.SimpleHomes.commands;
+package be.lankylord.simplehomes.commands;
 
-import com.github.lankylord.SimpleHomes.SimpleHomes;
+import be.lankylord.simplehomes.SimpleHomes;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -38,27 +40,34 @@ import org.bukkit.entity.Player;
  *
  * @author cedeel
  */
-public class HomeListCommand implements CommandExecutor {
-    
+public class HomeCommand implements CommandExecutor {
+
     private SimpleHomes instance;
-    
-    public HomeListCommand(SimpleHomes instance) {
+
+    public HomeCommand(SimpleHomes instance) {
         this.instance = instance;
     }
-    
+
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player && sender.hasPermission("simplehomes.multihomes")) {
-            Player p = (Player) sender;
-            
-            String section = p.getName().toLowerCase();
+    public boolean onCommand(CommandSender sender, Command cmnd, String label, String[] args) {
+        if (sender instanceof Player && sender.hasPermission("simplehomes.homes")) {
+            Player player = (Player) sender;
+
+            String homeName = "default";
+            if (args.length == 1 && sender.hasPermission("simplehomes.multihomes"))
+                homeName = args[0].toLowerCase();
+
+            String section = player.getName().toLowerCase() + "." + homeName;
             if (instance.getHomes().contains(section)) {
                 ConfigurationSection home = instance.getHomes().getConfigurationSection(section);
-                for (String s : home.getKeys(false)) {
-                    sender.sendMessage(ChatColor.YELLOW + s);
-                }
+                String w = home.getString("world");
+                int x = home.getInt("x"),
+                        y = home.getInt("y"),
+                        z = home.getInt("z");
+                player.teleport(new Location(Bukkit.getWorld(w), x, y, z));
+                player.sendMessage(ChatColor.YELLOW + "Teleported.");
+                return true;
             }
-            
         }
         return false;
     }

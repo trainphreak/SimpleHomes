@@ -1,6 +1,10 @@
-package com.github.lankylord.SimpleHomes;
+package be.lankylord.simplehomes;
 
-import com.github.lankylord.SimpleHomes.commands.*;
+import be.lankylord.simplehomes.commands.DeleteHomeCommand;
+import be.lankylord.simplehomes.commands.OtherHomeCommand;
+import be.lankylord.simplehomes.commands.SetHomeCommand;
+import be.lankylord.simplehomes.commands.HomeListCommand;
+import be.lankylord.simplehomes.commands.HomeCommand;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,9 +46,8 @@ public class SimpleHomes extends JavaPlugin {
     private File HomesFile = null;
 
     public void reloadHomes() {
-        if (HomesFile == null) {
+        if (HomesFile == null)
             HomesFile = new File(getDataFolder(), "Homes.yml");
-        }
         Homes = YamlConfiguration.loadConfiguration(HomesFile);
 
         InputStream defHomes = this.getResource("Homes.yml");
@@ -55,16 +58,14 @@ public class SimpleHomes extends JavaPlugin {
     }
 
     public FileConfiguration getHomes() {
-        if (Homes == null) {
+        if (Homes == null)
             this.reloadHomes();
-        }
         return Homes;
     }
 
     public void saveHomes() {
-        if (Homes == null || HomesFile == null) {
+        if (Homes == null || HomesFile == null)
             return;
-        }
         try {
             getHomes().save(HomesFile);
         } catch (IOException ex) {

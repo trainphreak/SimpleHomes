@@ -24,12 +24,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.lankylord.SimpleHomes.commands;
+package be.lankylord.simplehomes.commands;
 
-import com.github.lankylord.SimpleHomes.SimpleHomes;
-import org.bukkit.Bukkit;
+import be.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -40,35 +38,26 @@ import org.bukkit.entity.Player;
  *
  * @author cedeel
  */
-public class OtherHomeCommand implements CommandExecutor {
+public class HomeListCommand implements CommandExecutor {
 
     private SimpleHomes instance;
 
-    public OtherHomeCommand(SimpleHomes instance) {
+    public HomeListCommand(SimpleHomes instance) {
         this.instance = instance;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmnd, String label, String[] args) {
-        if (sender instanceof Player && sender.hasPermission("simplehomes.otherhomes")) {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (sender instanceof Player && sender.hasPermission("simplehomes.multihomes")) {
             Player p = (Player) sender;
-            String home = "default";
-            if (args.length == 2) {
-                home = args[1].toLowerCase();
+
+            String section = p.getName().toLowerCase();
+            if (instance.getHomes().contains(section)) {
+                ConfigurationSection home = instance.getHomes().getConfigurationSection(section);
+                for (String s : home.getKeys(false))
+                    sender.sendMessage(ChatColor.YELLOW + s);
             }
 
-            String target = args[0].toLowerCase();
-
-            if (instance.getHomes().contains(target + "." + home)) {
-                ConfigurationSection homes = instance.getHomes().getConfigurationSection(target + "." + home);
-                String w = homes.getString("world");
-                int x = homes.getInt("x"),
-                        y = homes.getInt("y"),
-                        z = homes.getInt("z");
-                p.teleport(new Location(Bukkit.getWorld(w), x, y, z));
-                p.sendMessage(ChatColor.YELLOW + "Teleported to " + target + "'s home.");
-                return true;
-            }
         }
         return false;
     }

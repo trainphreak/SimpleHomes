@@ -24,9 +24,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.lankylord.SimpleHomes.commands;
+package be.lankylord.simplehomes.commands;
 
-import com.github.lankylord.SimpleHomes.SimpleHomes;
+import be.lankylord.simplehomes.SimpleHomes;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -39,48 +40,35 @@ import org.bukkit.entity.Player;
  *
  * @author cedeel
  */
-public class SetHomeCommand implements CommandExecutor {
+public class OtherHomeCommand implements CommandExecutor {
 
     private SimpleHomes instance;
 
-    public SetHomeCommand(SimpleHomes instance) {
+    public OtherHomeCommand(SimpleHomes instance) {
         this.instance = instance;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmnd, String label, String[] args) {
-        if (sender instanceof Player && sender.hasPermission("simplehomes.homes")) {
-            Player player = (Player) sender;
-            if (instance.getHomes().get(player.getName().toLowerCase()) == null)
-                instance.getHomes().createSection(player.getName().toLowerCase());
+        if (sender instanceof Player && sender.hasPermission("simplehomes.otherhomes")) {
+            Player p = (Player) sender;
+            String home = "default";
+            if (args.length == 2)
+                home = args[1].toLowerCase();
 
-            int homes = instance.getHomes().getConfigurationSection(player.getName().toLowerCase()).getKeys(false).size();
-            if (homes < instance.getConfig().getInt("MaxHomes")) {
-                Location coords = player.getLocation();
+            String target = args[0].toLowerCase();
 
-                String homeName = "default";
-                if (args.length == 1 && sender.hasPermission("simplehomes.multihomes"))
-                    homeName = args[0].toLowerCase();
-
-                String section = player.getName().toLowerCase() + "." + homeName;
-                if (instance.getHomes().get(section) == null)
-                    instance.getHomes().createSection(section);
-
-                ConfigurationSection home = instance.getHomes().getConfigurationSection(section);
-
-                home.set("world", player.getWorld().getName());
-                home.set("x", coords.getBlockX());
-                home.set("y", coords.getBlockY());
-                home.set("z", coords.getBlockZ());
-                instance.saveHomes();
-                sender.sendMessage(ChatColor.YELLOW + "Home set.");
-
+            if (instance.getHomes().contains(target + "." + home)) {
+                ConfigurationSection homes = instance.getHomes().getConfigurationSection(target + "." + home);
+                String w = homes.getString("world");
+                int x = homes.getInt("x"),
+                        y = homes.getInt("y"),
+                        z = homes.getInt("z");
+                p.teleport(new Location(Bukkit.getWorld(w), x, y, z));
+                p.sendMessage(ChatColor.YELLOW + "Teleported to " + target + "'s home.");
                 return true;
-            } else {
-                player.sendMessage("Home cannot be set. The max of " + instance.getConfig().getInt("MaxHomes") + " has been reached.");
             }
         }
         return false;
-
     }
 }

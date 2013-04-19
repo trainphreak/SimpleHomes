@@ -24,9 +24,9 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.github.lankylord.SimpleHomes.commands;
+package be.lankylord.simplehomes.commands;
 
-import com.github.lankylord.SimpleHomes.SimpleHomes;
+import be.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -38,7 +38,7 @@ import org.bukkit.entity.Player;
  *
  * @author LankyLord
  */
-public class DeleteHomeCommand implements CommandExecutor{
+public class DeleteHomeCommand implements CommandExecutor {
 
     private SimpleHomes instance;
 
@@ -52,18 +52,17 @@ public class DeleteHomeCommand implements CommandExecutor{
             Player player = (Player) sender;
 
             String homeName = "default";
-            if (args.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
+            if (args.length == 1 && sender.hasPermission("simplehomes.multihomes"))
                 homeName = args[0].toLowerCase();
-            }
 
             String section = player.getName().toLowerCase() + ".";
             if (instance.getHomes().contains(section)) {
                 ConfigurationSection home = instance.getHomes().getConfigurationSection(section);
                 home.set(homeName, null);
                 sender.sendMessage(ChatColor.YELLOW + homeName + " home deleted.");
-                }
             }
+        }
         return false;
 
-        }
     }
+}
