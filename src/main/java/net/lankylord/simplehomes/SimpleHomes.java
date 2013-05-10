@@ -1,10 +1,10 @@
-package be.lankylord.simplehomes;
+package net.lankylord.simplehomes;
 
-import be.lankylord.simplehomes.commands.DeleteHomeCommand;
-import be.lankylord.simplehomes.commands.OtherHomeCommand;
-import be.lankylord.simplehomes.commands.SetHomeCommand;
-import be.lankylord.simplehomes.commands.HomeListCommand;
-import be.lankylord.simplehomes.commands.HomeCommand;
+import net.lankylord.simplehomes.commands.DeleteHomeCommand;
+import net.lankylord.simplehomes.commands.OtherHomeCommand;
+import net.lankylord.simplehomes.commands.SetHomeCommand;
+import net.lankylord.simplehomes.commands.HomeListCommand;
+import net.lankylord.simplehomes.commands.HomeCommand;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
