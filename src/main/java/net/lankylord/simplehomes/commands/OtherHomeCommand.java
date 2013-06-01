@@ -50,7 +50,7 @@ public class OtherHomeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmnd, String label, String[] args) {
-        if (sender instanceof Player && sender.hasPermission("simplehomes.otherhomes")) {
+        if (sender instanceof Player && args.length >= 1) {
             Player p = (Player) sender;
             String home = "default";
             if (args.length == 2)

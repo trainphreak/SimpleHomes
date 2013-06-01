@@ -17,6 +17,7 @@ commands:
   otherhome:
     description: Teleport to another player's sethome.
     permission: simplehomes.otherhomes
+    usage: "Usage: /otherhome <PlayerName> (HomeName)?"
   homelist:
     description: Get a list of homes
     permission: simplehomes.multihomes
