@@ -49,7 +49,7 @@ public class SetHomeCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmnd, String label, String[] args) {
-        if (sender instanceof Player && sender.hasPermission("simplehomes.homes")) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             if (instance.getHomes().get(player.getName().toLowerCase()) == null)
                 instance.getHomes().createSection(player.getName().toLowerCase());
