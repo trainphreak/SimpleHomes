@@ -10,20 +10,15 @@ database: false
 commands:
   sethome:
     description: Set your home.
-    permission: simplehomes.homes
   home:
     description: Teleport back to your set home.
-    permission: simplehomes.homes
   otherhome:
     description: Teleport to another player's sethome.
-    permission: simplehomes.otherhomes
     usage: "Usage: /otherhome <PlayerName> (HomeName)?"
   homelist:
     description: Get a list of homes
-    permission: simplehomes.multihomes
   delhome:
     description: Delete a home
-    permission: simplehomes.homes
     
 permissions:
   simplehomes.*:

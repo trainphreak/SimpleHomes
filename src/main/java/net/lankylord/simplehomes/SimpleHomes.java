@@ -1,15 +1,12 @@
 package net.lankylord.simplehomes;
 
-import net.lankylord.simplehomes.util.Updater;
-import net.lankylord.simplehomes.commands.DeleteHomeCommand;
-import net.lankylord.simplehomes.commands.OtherHomeCommand;
-import net.lankylord.simplehomes.commands.SetHomeCommand;
-import net.lankylord.simplehomes.commands.HomeListCommand;
-import net.lankylord.simplehomes.commands.HomeCommand;
+import com.pneumaticraft.commandhandler.CommandHandler;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.lankylord.simplehomes.managers.HomeFileManager;
+import net.lankylord.simplehomes.commands.*;
+import net.lankylord.simplehomes.managers.*;
+import net.lankylord.simplehomes.util.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
@@ -17,6 +14,7 @@ public class SimpleHomes extends JavaPlugin {
 
     static final Logger logger = Logger.getLogger("Minecraft");
     private HomeFileManager homeFileManager;
+    private CommandHandler commandHandler;
 
     public SimpleHomes() {
         this.homeFileManager = new HomeFileManager(this);
@@ -56,11 +54,13 @@ public class SimpleHomes extends JavaPlugin {
     }
 
     private void loadCommands() {
-        getCommand("home").setExecutor(new HomeCommand(this));
-        getCommand("sethome").setExecutor(new SetHomeCommand(this));
-        getCommand("otherhome").setExecutor(new OtherHomeCommand(this));
-        getCommand("homelist").setExecutor(new HomeListCommand(this));
-        getCommand("delhome").setExecutor(new DeleteHomeCommand(this));
+        PermissionsModule pm = new PermissionsModule();
+        commandHandler = new CommandHandler(this, pm);
+        commandHandler.registerCommand(new DeleteHomeCommand(this));
+        commandHandler.registerCommand(new HomeCommand(this));
+        commandHandler.registerCommand(new OtherHomeCommand(this));
+        commandHandler.registerCommand(new SetHomeCommand(this));
+        commandHandler.registerCommand(new HomeListCommand(this));
     }
 
     public HomeFileManager getHomeFileManager() {

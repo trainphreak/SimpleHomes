@@ -26,49 +26,50 @@
  */
 package net.lankylord.simplehomes.commands;
 
+import java.util.List;
 import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
 
 /**
  *
  * @author cedeel
  */
-public class HomeCommand implements CommandExecutor {
+public class HomeCommand extends SimpleHomesCommand {
 
-    private SimpleHomes instance;
-
-    public HomeCommand(SimpleHomes instance) {
-        this.instance = instance;
+    public HomeCommand(SimpleHomes plugin) {
+        super(plugin);
+        this.setName("SimpleHomes: Home");
+        this.setCommandUsage("/home [HomeName]");
+        this.setArgRange(0, 1);
+        this.addKey("home");
+        this.setPermission("simplehomes.homes", "Allows this user access to basic home commands", PermissionDefault.TRUE);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmnd, String label, String[] args) {
+    public void runCommand(CommandSender sender, List<String> args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
             String homeName = "default";
-            if (args.length == 1 && sender.hasPermission("simplehomes.multihomes"))
-                homeName = args[0].toLowerCase();
+            if (args.size() == 1 && sender.hasPermission("simplehomes.multihomes"))
+                homeName = args.get(0).toLowerCase();
 
             String section = player.getName().toLowerCase() + "." + homeName;
-            if (instance.getHomeFileManager().getHomes().contains(section)) {
-                ConfigurationSection home = instance.getHomeFileManager().getHomes().getConfigurationSection(section);
+            if (plugin.getHomeFileManager().getHomes().contains(section)) {
+                ConfigurationSection home = plugin.getHomeFileManager().getHomes().getConfigurationSection(section);
                 String w = home.getString("world");
                 int x = home.getInt("x"),
                         y = home.getInt("y"),
                         z = home.getInt("z");
                 player.teleport(new Location(Bukkit.getWorld(w), x, y, z));
                 player.sendMessage(ChatColor.YELLOW + "Teleported.");
-                return true;
             }
         }
-        return false;
     }
 }

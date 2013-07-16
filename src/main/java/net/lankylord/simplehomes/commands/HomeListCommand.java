@@ -26,39 +26,42 @@
  */
 package net.lankylord.simplehomes.commands;
 
+import java.util.List;
 import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
 
 /**
  *
  * @author cedeel
  */
-public class HomeListCommand implements CommandExecutor {
+public class HomeListCommand extends SimpleHomesCommand {
 
-    private SimpleHomes instance;
-
-    public HomeListCommand(SimpleHomes instance) {
-        this.instance = instance;
+    public HomeListCommand(SimpleHomes plugin) {
+        super(plugin);
+        this.setName("SimpleHomes: List Homes");
+        this.setCommandUsage("/home list");
+        this.setArgRange(0, 0);
+        this.addKey("homelist");
+        this.addKey("home list");
+        this.setPermission("simplehomes.homes", "Allows this user access to basic home commands", PermissionDefault.TRUE);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public void runCommand(CommandSender sender, List<String> args) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
 
             String section = p.getName().toLowerCase();
-            if (instance.getHomeFileManager().getHomes().contains(section)) {
-                ConfigurationSection home = instance.getHomeFileManager().getHomes().getConfigurationSection(section);
+            if (plugin.getHomeFileManager().getHomes().contains(section)) {
+                ConfigurationSection home = plugin.getHomeFileManager().getHomes().getConfigurationSection(section);
                 for (String s : home.getKeys(false))
                     sender.sendMessage(ChatColor.YELLOW + s);
             }
 
         }
-        return false;
     }
 }

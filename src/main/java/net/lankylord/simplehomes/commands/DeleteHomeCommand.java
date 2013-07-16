@@ -26,43 +26,46 @@
  */
 package net.lankylord.simplehomes.commands;
 
+import java.util.List;
 import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
 
 /**
  *
  * @author LankyLord
  */
-public class DeleteHomeCommand implements CommandExecutor {
+public class DeleteHomeCommand extends SimpleHomesCommand {
 
-    private SimpleHomes instance;
-
-    public DeleteHomeCommand(SimpleHomes instance) {
-        this.instance = instance;
+    public DeleteHomeCommand(SimpleHomes plugin) {
+        super(plugin);
+        this.setName("SimpleHomes: Delete Home");
+        this.setCommandUsage("/home delete [HomeName]");
+        this.setArgRange(0, 1);
+        this.addKey("home delete");
+        this.addKey("delhome");
+        this.setPermission("simplehomes.homes", "Allows this user access to basic home commands", PermissionDefault.TRUE);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public void runCommand(CommandSender sender, List<String> args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
             String homeName = "default";
-            if (args.length == 1 && sender.hasPermission("simplehomes.multihomes"))
-                homeName = args[0].toLowerCase();
+            if (args.size() == 1 && sender.hasPermission("simplehomes.multihomes"))
+                homeName = args.get(0).toLowerCase();
 
             String section = player.getName().toLowerCase() + ".";
-            if (instance.getHomeFileManager().getHomes().contains(section)) {
-                ConfigurationSection home = instance.getHomeFileManager().getHomes().getConfigurationSection(section);
+            if (plugin.getHomeFileManager().getHomes().contains(section)) {
+                ConfigurationSection home = plugin.getHomeFileManager().getHomes().getConfigurationSection(section);
                 home.set(homeName, null);
                 sender.sendMessage(ChatColor.YELLOW + homeName + " home deleted.");
             }
-        }
-        return false;
-
+        } else
+            sender.sendMessage(colour3 + "That command can only be used by a player");
     }
 }

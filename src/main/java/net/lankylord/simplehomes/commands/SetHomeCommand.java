@@ -26,29 +26,35 @@
  */
 package net.lankylord.simplehomes.commands;
 
+import java.util.List;
 import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionDefault;
 
 /**
  *
  * @author cedeel
  */
-public class SetHomeCommand implements CommandExecutor {
+public class SetHomeCommand extends SimpleHomesCommand {
 
     private SimpleHomes instance;
 
     public SetHomeCommand(SimpleHomes plugin) {
-        this.instance = instance;
+        super(plugin);
+        this.setName("SimpleHomes: Set Home");
+        this.setCommandUsage("/home set [HomeName]");
+        this.setArgRange(0, 1);
+        this.addKey("sethome");
+        this.addKey("home set");
+        this.setPermission("simplehomes.homes", "Allows this user access to basic home commands", PermissionDefault.TRUE);
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmnd, String label, String[] args) {
+    public void runCommand(CommandSender sender, List<String> args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (instance.getHomeFileManager().getHomes().get(player.getName().toLowerCase()) == null)
@@ -59,8 +65,8 @@ public class SetHomeCommand implements CommandExecutor {
                 Location coords = player.getLocation();
 
                 String homeName = "default";
-                if (args.length == 1 && sender.hasPermission("simplehomes.multihomes"))
-                    homeName = args[0].toLowerCase();
+                if (args.size() == 1 && sender.hasPermission("simplehomes.multihomes"))
+                    homeName = args.get(0).toLowerCase();
 
                 String section = player.getName().toLowerCase() + "." + homeName;
                 if (instance.getHomeFileManager().getHomes().get(section) == null)
@@ -74,12 +80,8 @@ public class SetHomeCommand implements CommandExecutor {
                 home.set("z", coords.getBlockZ());
                 instance.getHomeFileManager().saveHomes();
                 sender.sendMessage(ChatColor.YELLOW + "Home set.");
-
-                return true;
             } else
                 player.sendMessage("Home cannot be set. The max of " + instance.getConfig().getInt("MaxHomes") + " has been reached.");
         }
-        return false;
-
     }
 }
