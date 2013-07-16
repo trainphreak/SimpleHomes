@@ -52,8 +52,8 @@ public class HomeListCommand implements CommandExecutor {
             Player p = (Player) sender;
 
             String section = p.getName().toLowerCase();
-            if (instance.getHomes().contains(section)) {
-                ConfigurationSection home = instance.getHomes().getConfigurationSection(section);
+            if (instance.getHomeFileManager().getHomes().contains(section)) {
+                ConfigurationSection home = instance.getHomeFileManager().getHomes().getConfigurationSection(section);
                 for (String s : home.getKeys(false))
                     sender.sendMessage(ChatColor.YELLOW + s);
             }

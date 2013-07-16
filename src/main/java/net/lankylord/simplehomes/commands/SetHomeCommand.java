@@ -43,7 +43,7 @@ public class SetHomeCommand implements CommandExecutor {
 
     private SimpleHomes instance;
 
-    public SetHomeCommand(SimpleHomes instance) {
+    public SetHomeCommand(SimpleHomes plugin) {
         this.instance = instance;
     }
 
@@ -51,10 +51,10 @@ public class SetHomeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmnd, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (instance.getHomes().get(player.getName().toLowerCase()) == null)
-                instance.getHomes().createSection(player.getName().toLowerCase());
+            if (instance.getHomeFileManager().getHomes().get(player.getName().toLowerCase()) == null)
+                instance.getHomeFileManager().getHomes().createSection(player.getName().toLowerCase());
 
-            int homes = instance.getHomes().getConfigurationSection(player.getName().toLowerCase()).getKeys(false).size();
+            int homes = instance.getHomeFileManager().getHomes().getConfigurationSection(player.getName().toLowerCase()).getKeys(false).size();
             if (homes < instance.getConfig().getInt("MaxHomes")) {
                 Location coords = player.getLocation();
 
@@ -63,16 +63,16 @@ public class SetHomeCommand implements CommandExecutor {
                     homeName = args[0].toLowerCase();
 
                 String section = player.getName().toLowerCase() + "." + homeName;
-                if (instance.getHomes().get(section) == null)
-                    instance.getHomes().createSection(section);
+                if (instance.getHomeFileManager().getHomes().get(section) == null)
+                    instance.getHomeFileManager().getHomes().createSection(section);
 
-                ConfigurationSection home = instance.getHomes().getConfigurationSection(section);
+                ConfigurationSection home = instance.getHomeFileManager().getHomes().getConfigurationSection(section);
 
                 home.set("world", player.getWorld().getName());
                 home.set("x", coords.getBlockX());
                 home.set("y", coords.getBlockY());
                 home.set("z", coords.getBlockZ());
-                instance.saveHomes();
+                instance.getHomeFileManager().saveHomes();
                 sender.sendMessage(ChatColor.YELLOW + "Home set.");
 
                 return true;

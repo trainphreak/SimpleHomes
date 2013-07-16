@@ -56,8 +56,8 @@ public class DeleteHomeCommand implements CommandExecutor {
                 homeName = args[0].toLowerCase();
 
             String section = player.getName().toLowerCase() + ".";
-            if (instance.getHomes().contains(section)) {
-                ConfigurationSection home = instance.getHomes().getConfigurationSection(section);
+            if (instance.getHomeFileManager().getHomes().contains(section)) {
+                ConfigurationSection home = instance.getHomeFileManager().getHomes().getConfigurationSection(section);
                 home.set(homeName, null);
                 sender.sendMessage(ChatColor.YELLOW + homeName + " home deleted.");
             }

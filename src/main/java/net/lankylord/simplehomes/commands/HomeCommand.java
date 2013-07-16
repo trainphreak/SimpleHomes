@@ -58,8 +58,8 @@ public class HomeCommand implements CommandExecutor {
                 homeName = args[0].toLowerCase();
 
             String section = player.getName().toLowerCase() + "." + homeName;
-            if (instance.getHomes().contains(section)) {
-                ConfigurationSection home = instance.getHomes().getConfigurationSection(section);
+            if (instance.getHomeFileManager().getHomes().contains(section)) {
+                ConfigurationSection home = instance.getHomeFileManager().getHomes().getConfigurationSection(section);
                 String w = home.getString("world");
                 int x = home.getInt("x"),
                         y = home.getInt("y"),
