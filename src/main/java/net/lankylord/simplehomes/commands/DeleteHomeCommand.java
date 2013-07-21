@@ -26,7 +26,6 @@
  */
 package net.lankylord.simplehomes.commands;
 
-import java.util.List;
 import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -34,10 +33,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 
-/**
- *
- * @author LankyLord
- */
+import java.util.List;
+
+/** @author LankyLord */
 public class DeleteHomeCommand extends SimpleHomesCommand {
 
     public DeleteHomeCommand(SimpleHomes plugin) {

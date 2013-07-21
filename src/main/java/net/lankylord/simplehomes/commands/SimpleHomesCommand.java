@@ -26,24 +26,22 @@
 package net.lankylord.simplehomes.commands;
 
 import com.pneumaticraft.commandhandler.Command;
-import java.util.List;
 import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-/**
- *
- * @author LankyLord
- */
-public abstract class SimpleHomesCommand extends Command {
+import java.util.List;
 
-    protected SimpleHomes plugin;
-    protected ChatColor colour1 = ChatColor.GOLD;
-    protected ChatColor colour2 = ChatColor.GRAY;
-    protected ChatColor colour3 = ChatColor.RED;
+/** @author LankyLord */
+abstract class SimpleHomesCommand extends Command {
 
-    public SimpleHomesCommand(SimpleHomes instance) {
+    final SimpleHomes plugin;
+    private final ChatColor colour1 = ChatColor.GOLD;
+    private final ChatColor colour2 = ChatColor.GRAY;
+    final ChatColor colour3 = ChatColor.RED;
+
+    SimpleHomesCommand(SimpleHomes instance) {
         super(instance);
         plugin = instance;
     }

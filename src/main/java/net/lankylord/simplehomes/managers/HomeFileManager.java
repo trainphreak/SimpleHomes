@@ -25,18 +25,16 @@
  */
 package net.lankylord.simplehomes.managers;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
 import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-/**
- *
- * @author LankyLord
- */
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+
+/** @author LankyLord */
 public class HomeFileManager {
 
     private final SimpleHomes instance;
@@ -53,7 +51,7 @@ public class HomeFileManager {
         return Homes;
     }
 
-    public void reloadHomes() {
+    void reloadHomes() {
         if (HomesFile == null)
             HomesFile = new File(instance.getDataFolder(), "Homes.yml");
         Homes = YamlConfiguration.loadConfiguration(HomesFile);

@@ -26,7 +26,6 @@
  */
 package net.lankylord.simplehomes.commands;
 
-import java.util.List;
 import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -34,10 +33,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionDefault;
 
-/**
- *
- * @author cedeel
- */
+import java.util.List;
+
+/** @author cedeel */
 public class HomeListCommand extends SimpleHomesCommand {
 
     public HomeListCommand(SimpleHomes plugin) {

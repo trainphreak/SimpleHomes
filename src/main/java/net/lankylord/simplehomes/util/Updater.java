@@ -5,6 +5,13 @@
  */
 package net.lankylord.simplehomes.util;
 
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.XMLEvent;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -13,17 +20,11 @@ import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.XMLEvent;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
 /**
  * Check dev.bukkit.org to find updates for a given plugin, and download the
  * updates if needed.
- * <p>
+ * <p/>
  * <b>VERY, VERY IMPORTANT</b>: Because there are no standards for adding
  * auto-update toggles in your plugin's config, this system provides NO CHECK
  * WITH YOUR CONFIG to make sure the user has allowed auto-updating.
@@ -33,15 +34,15 @@ import org.bukkit.plugin.Plugin;
  * <br>
  * If you fail to include this option in your config, your plugin will be
  * <b>REJECTED</b> when you attempt to submit it to dev.bukkit.org.
- * <p>
+ * <p/>
  * An example of a good configuration option would be something similar to
  * 'auto-update: true' - if this value is set to false you may NOT run the
  * auto-updater.
  * <br>
  * If you are unsure about these rules, please read the plugin submission
  * guidelines: http://goo.gl/8iU5l
- * 
-* @author H31IX
+ *
+ * @author H31IX
  */
 public class Updater {
 
@@ -52,7 +53,6 @@ public class Updater {
     private long totalSize; // Holds the total size of the file
     //private double downloadedSize; TODO: Holds the number of bytes downloaded
     private int sizeLine; // Used for detecting file size
-    private int multiplier; // Used for determining when to broadcast download updates
     private boolean announce; // Whether to announce file downloads
     private URL url; // Connecting to RSS
     private File file; // The plugin's file
@@ -78,13 +78,9 @@ public class Updater {
          * time the server restarts/reloads.
          */
         SUCCESS,
-        /**
-         * The updater did not find an update, and nothing was downloaded.
-         */
+        /** The updater did not find an update, and nothing was downloaded. */
         NO_UPDATE,
-        /**
-         * The updater found an update, but was unable to download it.
-         */
+        /** The updater found an update, but was unable to download it. */
         FAIL_DOWNLOAD,
         /**
          * For some reason, the updater was unable to contact dev.bukkit.org to
@@ -108,9 +104,7 @@ public class Updater {
         UPDATE_AVAILABLE
     }
 
-    /**
-     * Allows the dev to specify the type of update that will be run.
-     */
+    /** Allows the dev to specify the type of update that will be run. */
     public enum UpdateType {
 
         /**
@@ -132,16 +126,16 @@ public class Updater {
 
     /**
      * Initialize the updater
-     *     
-* @param plugin The plugin that is checking for an update.
-     * @param slug The dev.bukkit.org slug of the project
-     * (http://dev.bukkit.org/server-mods/SLUG_IS_HERE)
-     * @param file The file that the plugin is running from, get this by doing
-     * this.getFile() from within your main class.
-     * @param type Specify the type of update this will be. See
-     * {@link UpdateType}
+     *
+     * @param plugin   The plugin that is checking for an update.
+     * @param slug     The dev.bukkit.org slug of the project
+     *                 (http://dev.bukkit.org/server-mods/SLUG_IS_HERE)
+     * @param file     The file that the plugin is running from, get this by doing
+     *                 this.getFile() from within your main class.
+     * @param type     Specify the type of update this will be. See
+     *                 {@link UpdateType}
      * @param announce True if the program should announce the progress of new
-     * updates in console
+     *                 updates in console
      */
     public Updater(Plugin plugin, String slug, File file, UpdateType type, boolean announce) {
         this.plugin = plugin;
@@ -161,9 +155,7 @@ public class Updater {
         thread.start();
     }
 
-    /**
-     * Get the result of the update process.
-     */
+    /** Get the result of the update process. */
     public Updater.UpdateResult getResult() {
         waitForThread();
         return result;
@@ -178,9 +170,7 @@ public class Updater {
         return totalSize;
     }
 
-    /**
-     * Get the version string latest file avaliable online.
-     */
+    /** Get the version string latest file avaliable online. */
     public String getLatestVersionString() {
         waitForThread();
         return versionTitle;
@@ -199,9 +189,7 @@ public class Updater {
             }
     }
 
-    /**
-     * Save an update from dev.bukkit.org into the server's update folder.
-     */
+    /** Save an update from dev.bukkit.org into the server's update folder. */
     private void saveFile(File folder, String file, String u) {
         if (!folder.exists())
             folder.mkdir();
@@ -251,9 +239,7 @@ public class Updater {
         }
     }
 
-    /**
-     * Part of Zip-File-Extractor, modified by H31IX for use with Bukkit
-     */
+    /** Part of Zip-File-Extractor, modified by H31IX for use with Bukkit */
     private void unzip(String file) {
         try {
             File fSourceZip = new File(file);
@@ -296,7 +282,7 @@ public class Updater {
                         {
                             boolean found = false;
                             for (File xFile : contents) // Loop through contents to see if it exists
-                            
+
                                 if (xFile.getName().equals(cFile.getName())) {
                                     found = true;
                                     break;
@@ -331,9 +317,7 @@ public class Updater {
         return false;
     }
 
-    /**
-     * Obtain the direct download file url from the file's page.
-     */
+    /** Obtain the direct download file url from the file's page. */
     private String getFile(String link) {
         String download = null;
         try {
@@ -350,12 +334,12 @@ public class Updater {
                     if (line.contains("<li class=\"user-action user-action-download\">"))
                         // Get the raw link
                         download = line.split("<a href=\"")[1].split("\">Download</a>")[0];
-                    // Search for size
+                        // Search for size
                     else if (line.contains("<dt>Size</dt>"))
                         sizeLine = counter + 1;
                     else if (counter == sizeLine) {
                         String size = line.replaceAll("<dd>", "").replaceAll("</dd>", "");
-                        multiplier = size.contains("MiB") ? 1048576 : 1024;
+                        int multiplier = size.contains("MiB") ? 1048576 : 1024;
                         size = size.replace(" KiB", "").replace(" MiB", "");
                         totalSize = (long) (Double.parseDouble(size) * multiplier);
                     }
@@ -404,9 +388,7 @@ public class Updater {
         return true;
     }
 
-    /**
-     * Used to calculate the version string as an Integer
-     */
+    /** Used to calculate the version string as an Integer */
     private Integer calVer(String s) throws NumberFormatException {
         if (s.contains(".")) {
             StringBuilder sb = new StringBuilder();
@@ -431,9 +413,7 @@ public class Updater {
         return false;
     }
 
-    /**
-     * Part of RSS Reader by Vogella, modified by H31IX for use with Bukkit
-     */
+    /** Part of RSS Reader by Vogella, modified by H31IX for use with Bukkit */
     private boolean readFeed() {
         try {
             // Set header values intial to the empty string
@@ -477,9 +457,7 @@ public class Updater {
         }
     }
 
-    /**
-     * Open the RSS feed
-     */
+    /** Open the RSS feed */
     private InputStream read() {
         try {
             return url.openStream();
