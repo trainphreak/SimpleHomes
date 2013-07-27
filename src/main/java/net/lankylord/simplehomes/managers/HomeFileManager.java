@@ -38,38 +38,38 @@ import java.util.logging.Level;
 public class HomeFileManager {
 
     private final SimpleHomes instance;
-    private FileConfiguration Homes = null;
-    private File HomesFile = null;
+    private FileConfiguration homes = null;
+    private File homesFile = null;
 
     public HomeFileManager(SimpleHomes instance) {
         this.instance = instance;
     }
 
     public FileConfiguration getHomes() {
-        if (Homes == null)
+        if (homes == null)
             this.reloadHomes();
-        return Homes;
+        return homes;
     }
 
     void reloadHomes() {
-        if (HomesFile == null)
-            HomesFile = new File(instance.getDataFolder(), "Homes.yml");
-        Homes = YamlConfiguration.loadConfiguration(HomesFile);
+        if (homesFile == null)
+            homesFile = new File(instance.getDataFolder(), "Homes.yml");
+        homes = YamlConfiguration.loadConfiguration(homesFile);
 
         InputStream defHomes = instance.getResource("Homes.yml");
         if (defHomes != null) {
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defHomes);
-            Homes.setDefaults(defConfig);
+            homes.setDefaults(defConfig);
         }
     }
 
     public void saveHomes() {
-        if (Homes == null || HomesFile == null)
+        if (homes == null || homesFile == null)
             return;
         try {
-            getHomes().save(HomesFile);
+            getHomes().save(homesFile);
         } catch (IOException ex) {
-            instance.getLogger().log(Level.SEVERE, "Could not save config to " + HomesFile, ex);
+            instance.getLogger().log(Level.SEVERE, "Could not save config to " + homesFile, ex);
         }
     }
 }
