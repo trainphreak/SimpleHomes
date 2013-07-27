@@ -10,11 +10,9 @@ import org.mcstats.MetricsLite;
 
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SimpleHomes extends JavaPlugin {
 
-    private static final Logger logger = Logger.getLogger("Minecraft");
     private final HomeFileManager homeFileManager;
 
     public SimpleHomes() {
@@ -31,13 +29,13 @@ public class SimpleHomes extends JavaPlugin {
         loadMetrics();
         if (getConfig().getBoolean("AutoUpdater.Enabled", true))
             loadUpdater();
-        logger.info("[SimpleHomes] SimpleHomes Enabled!");
+        getLogger().info("[SimpleHomes] SimpleHomes Enabled!");
     }
 
     @Override
     public void onDisable() {
         homeFileManager.saveHomes();
-        logger.log(Level.INFO, "SimpleHomes Disabled!");
+        getLogger().log(Level.INFO, "SimpleHomes Disabled!");
     }
 
     private void loadMetrics() {
@@ -45,13 +43,13 @@ public class SimpleHomes extends JavaPlugin {
             MetricsLite metrics = new MetricsLite(this);
             metrics.start();
         } catch (IOException e) {
-            logger.log(Level.WARNING, "Failed to submit stats.");
+            getLogger().log(Level.WARNING, "Failed to submit stats.");
         }
     }
 
     private void loadUpdater() {
         Updater updater = new Updater(this, "simplehomes", this.getFile(), Updater.UpdateType.DEFAULT, true);
-        logger.log(Level.INFO, "[SimpleHomes] AutoUpdater Enabled.");
+        getLogger().log(Level.INFO, "[SimpleHomes] AutoUpdater Enabled.");
     }
 
     private void loadCommands() {

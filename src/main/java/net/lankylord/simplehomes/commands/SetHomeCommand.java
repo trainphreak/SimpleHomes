@@ -39,8 +39,6 @@ import java.util.List;
 /** @author cedeel */
 public class SetHomeCommand extends SimpleHomesCommand {
 
-    private SimpleHomes instance;
-
     public SetHomeCommand(SimpleHomes plugin) {
         super(plugin);
         this.setName("SimpleHomes: Set Home");
@@ -55,11 +53,11 @@ public class SetHomeCommand extends SimpleHomesCommand {
     public void runCommand(CommandSender sender, List<String> args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (instance.getHomeFileManager().getHomes().get(player.getName().toLowerCase()) == null)
-                instance.getHomeFileManager().getHomes().createSection(player.getName().toLowerCase());
+            if (plugin.getHomeFileManager().getHomes().get(player.getName().toLowerCase()) == null)
+                plugin.getHomeFileManager().getHomes().createSection(player.getName().toLowerCase());
 
-            int homes = instance.getHomeFileManager().getHomes().getConfigurationSection(player.getName().toLowerCase()).getKeys(false).size();
-            if (homes < instance.getConfig().getInt("MaxHomes")) {
+            int homes = plugin.getHomeFileManager().getHomes().getConfigurationSection(player.getName().toLowerCase()).getKeys(false).size();
+            if (homes < plugin.getConfig().getInt("MaxHomes")) {
                 Location coords = player.getLocation();
 
                 String homeName = "default";
@@ -67,19 +65,19 @@ public class SetHomeCommand extends SimpleHomesCommand {
                     homeName = args.get(0).toLowerCase();
 
                 String section = player.getName().toLowerCase() + "." + homeName;
-                if (instance.getHomeFileManager().getHomes().get(section) == null)
-                    instance.getHomeFileManager().getHomes().createSection(section);
+                if (plugin.getHomeFileManager().getHomes().get(section) == null)
+                    plugin.getHomeFileManager().getHomes().createSection(section);
 
-                ConfigurationSection home = instance.getHomeFileManager().getHomes().getConfigurationSection(section);
+                ConfigurationSection home = plugin.getHomeFileManager().getHomes().getConfigurationSection(section);
 
                 home.set("world", player.getWorld().getName());
                 home.set("x", coords.getBlockX());
                 home.set("y", coords.getBlockY());
                 home.set("z", coords.getBlockZ());
-                instance.getHomeFileManager().saveHomes();
+                plugin.getHomeFileManager().saveHomes();
                 sender.sendMessage(ChatColor.YELLOW + "Home set.");
             } else
-                player.sendMessage("Home cannot be set. The max of " + instance.getConfig().getInt("MaxHomes") + " has been reached.");
+                player.sendMessage("Home cannot be set. The max of " + plugin.getConfig().getInt("MaxHomes") + " has been reached.");
         }
     }
 }
