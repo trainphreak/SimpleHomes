@@ -59,7 +59,8 @@ public class HomeListCommand extends SimpleHomesCommand {
                 for (String s : home.getKeys(false))
                     sender.sendMessage(ChatColor.YELLOW + s);
             }
-
+        } else {
+            sender.sendMessage(denyFromConsole);
         }
     }
 }

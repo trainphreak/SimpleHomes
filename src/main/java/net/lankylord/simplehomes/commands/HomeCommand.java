@@ -68,6 +68,8 @@ public class HomeCommand extends SimpleHomesCommand {
                 player.teleport(new Location(Bukkit.getWorld(w), x, y, z));
                 player.sendMessage(ChatColor.YELLOW + "Teleported.");
             }
+        } else {
+            sender.sendMessage(denyFromConsole);
         }
     }
 }

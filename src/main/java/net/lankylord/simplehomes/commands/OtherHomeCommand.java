@@ -42,17 +42,17 @@ public class OtherHomeCommand extends SimpleHomesCommand {
 
     public OtherHomeCommand(SimpleHomes plugin) {
         super(plugin);
-        this.setName("SimpleHomes: Delete Home");
-        this.setCommandUsage("/home delete [HomeName]");
-        this.setArgRange(0, 1);
-        this.addKey("home delete");
-        this.addKey("delhome");
-        this.setPermission("simplehomes.homes", "Allows this user access to basic home commands", PermissionDefault.TRUE);
+        this.setName("SimpleHomes: Other Home");
+        this.setCommandUsage("/home other <PlayerName> [HomeName]");
+        this.setArgRange(1, 2);
+        this.addKey("home other");
+        this.addKey("otherhome");
+        this.setPermission("simplehomes.otherhomes", "Allows this user access to basic home commands", PermissionDefault.TRUE);
     }
 
     @Override
     public void runCommand(CommandSender sender, List<String> args) {
-        if (sender instanceof Player && args.size() >= 1) {
+        if (sender instanceof Player) {
             Player p = (Player) sender;
             String home = "default";
             if (args.size() == 2)
@@ -69,6 +69,8 @@ public class OtherHomeCommand extends SimpleHomesCommand {
                 p.teleport(new Location(Bukkit.getWorld(w), x, y, z));
                 p.sendMessage(ChatColor.YELLOW + "Teleported to " + target + "'s home.");
             }
+        } else {
+            sender.sendMessage(denyFromConsole);
         }
     }
 }

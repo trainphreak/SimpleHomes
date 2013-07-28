@@ -37,9 +37,10 @@ import java.util.List;
 abstract class SimpleHomesCommand extends Command {
 
     final SimpleHomes plugin;
-    private final ChatColor colour1 = ChatColor.GOLD;
-    private final ChatColor colour2 = ChatColor.GRAY;
+    final ChatColor colour1 = ChatColor.GOLD;
+    final ChatColor colour2 = ChatColor.GRAY;
     final ChatColor colour3 = ChatColor.RED;
+    final String denyFromConsole = colour3 + "That command cannot be run from console.";
 
     SimpleHomesCommand(SimpleHomes instance) {
         super(instance);

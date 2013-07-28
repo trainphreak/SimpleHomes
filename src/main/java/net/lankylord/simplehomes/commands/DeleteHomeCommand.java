@@ -64,6 +64,6 @@ public class DeleteHomeCommand extends SimpleHomesCommand {
                 sender.sendMessage(ChatColor.YELLOW + homeName + " home deleted.");
             }
         } else
-            sender.sendMessage(colour3 + "That command can only be used by a player");
+            sender.sendMessage(denyFromConsole);
     }
 }

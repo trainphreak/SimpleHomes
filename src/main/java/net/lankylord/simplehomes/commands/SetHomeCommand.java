@@ -78,6 +78,8 @@ public class SetHomeCommand extends SimpleHomesCommand {
                 sender.sendMessage(ChatColor.YELLOW + "Home set.");
             } else
                 player.sendMessage("Home cannot be set. The max of " + plugin.getConfig().getInt("MaxHomes") + " has been reached.");
+        } else {
+            sender.sendMessage(denyFromConsole);
         }
     }
 }
