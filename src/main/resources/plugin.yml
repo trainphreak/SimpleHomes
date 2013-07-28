@@ -19,22 +19,3 @@ commands:
     description: Get a list of homes
   delhome:
     description: Delete a home
-    
-permissions:
-  simplehomes.*:
-    description: All SimpleHomes permissions
-    children:
-      simplehomes.homes: true
-      simplehomes.multihomes: true
-      simplehomes.otherhomes: true
-  simplehomes.homes:
-    description: Allows you to set a home and teleport to it.
-    default: true
-  simplehomes.multihomes:
-    description: Allows you to set multiple homes.
-    children:
-      simplehomes.homes: true
-    default: true
-  simplehomes.otherhomes:
-    description: Allows you to teleport to other people's homes.
-    default: op
