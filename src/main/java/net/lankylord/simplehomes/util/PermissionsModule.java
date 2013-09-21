@@ -42,17 +42,21 @@ public class PermissionsModule implements PermissionsInterface {
 
     @Override
     public boolean hasAnyPermission(CommandSender sender, List<String> allPermissionStrings, boolean opRequired) {
-        for (String node : allPermissionStrings)
-            if (hasPermission(sender, node, opRequired))
+        for (String node : allPermissionStrings) {
+            if (hasPermission(sender, node, opRequired)) {
                 return true;
+            }
+        }
         return false;
     }
 
     @Override
     public boolean hasAllPermission(CommandSender sender, List<String> allPermissionStrings, boolean opRequired) {
-        for (String node : allPermissionStrings)
-            if (!hasPermission(sender, node, opRequired))
+        for (String node : allPermissionStrings) {
+            if (!hasPermission(sender, node, opRequired)) {
                 return false;
+            }
+        }
         return true;
     }
 }

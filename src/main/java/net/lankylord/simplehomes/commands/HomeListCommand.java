@@ -56,8 +56,9 @@ public class HomeListCommand extends SimpleHomesCommand {
             String section = p.getName().toLowerCase();
             if (plugin.getHomeFileManager().getHomes().contains(section)) {
                 ConfigurationSection home = plugin.getHomeFileManager().getHomes().getConfigurationSection(section);
-                for (String s : home.getKeys(false))
+                for (String s : home.getKeys(false)) {
                     sender.sendMessage(ChatColor.YELLOW + s);
+                }
             }
         } else {
             sender.sendMessage(denyFromConsole);

@@ -59,21 +59,26 @@ abstract class SimpleHomesCommand extends Command {
         String keys = "";
         String prefix = "";
 
-        if (sender instanceof Player)
+        if (sender instanceof Player) {
             prefix = "/";
-        for (String key : this.getKeyStrings())
+        }
+        for (String key : this.getKeyStrings()) {
             keys += prefix + key + ", ";
+        }
 
         keys = keys.substring(0, keys.length() - 2);
         sender.sendMessage(colour1 + "Aliases: " + colour2 + keys);
         if (this.getCommandExamples().size() > 0) {
             sender.sendMessage(colour1 + "Examples: ");
-            if (sender instanceof Player)
-                for (int i = 0; i < 4 && i < this.getCommandExamples().size(); i++)
+            if (sender instanceof Player) {
+                for (int i = 0; i < 4 && i < this.getCommandExamples().size(); i++) {
                     sender.sendMessage(this.getCommandExamples().get(i));
-            else
-                for (String c : this.getCommandExamples())
+                }
+            } else {
+                for (String c : this.getCommandExamples()) {
                     sender.sendMessage(c);
+                }
+            }
         }
     }
 }

@@ -33,8 +33,9 @@ public class SimpleHomes extends JavaPlugin {
         homeFileManager.saveHomes();
         saveConfig();
         loadMetrics();
-        if (getConfig().getBoolean("AutoUpdater.Enabled", true))
+        if (getConfig().getBoolean("AutoUpdater.Enabled", true)) {
             loadUpdater();
+        }
         getLogger().info("[SimpleHomes] SimpleHomes Enabled!");
     }
 

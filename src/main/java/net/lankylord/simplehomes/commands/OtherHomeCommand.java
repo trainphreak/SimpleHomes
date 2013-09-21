@@ -55,8 +55,9 @@ public class OtherHomeCommand extends SimpleHomesCommand {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             String home = "default";
-            if (args.size() == 2)
+            if (args.size() == 2) {
                 home = args.get(1).toLowerCase();
+            }
 
             String target = args.get(0).toLowerCase();
 

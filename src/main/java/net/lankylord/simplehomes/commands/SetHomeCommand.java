@@ -53,20 +53,23 @@ public class SetHomeCommand extends SimpleHomesCommand {
     public void runCommand(CommandSender sender, List<String> args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (plugin.getHomeFileManager().getHomes().get(player.getName().toLowerCase()) == null)
+            if (plugin.getHomeFileManager().getHomes().get(player.getName().toLowerCase()) == null) {
                 plugin.getHomeFileManager().getHomes().createSection(player.getName().toLowerCase());
+            }
 
             int homes = plugin.getHomeFileManager().getHomes().getConfigurationSection(player.getName().toLowerCase()).getKeys(false).size();
             if (homes < plugin.getConfig().getInt("MaxHomes")) {
                 Location coords = player.getLocation();
 
                 String homeName = "default";
-                if (args.size() == 1 && sender.hasPermission("simplehomes.multihomes"))
+                if (args.size() == 1 && sender.hasPermission("simplehomes.multihomes")) {
                     homeName = args.get(0).toLowerCase();
+                }
 
                 String section = player.getName().toLowerCase() + "." + homeName;
-                if (plugin.getHomeFileManager().getHomes().get(section) == null)
+                if (plugin.getHomeFileManager().getHomes().get(section) == null) {
                     plugin.getHomeFileManager().getHomes().createSection(section);
+                }
 
                 ConfigurationSection home = plugin.getHomeFileManager().getHomes().getConfigurationSection(section);
 
@@ -76,8 +79,9 @@ public class SetHomeCommand extends SimpleHomesCommand {
                 home.set("z", coords.getBlockZ());
                 plugin.getHomeFileManager().saveHomes();
                 sender.sendMessage(ChatColor.YELLOW + "Home set.");
-            } else
+            } else {
                 player.sendMessage("Home cannot be set. The max of " + plugin.getConfig().getInt("MaxHomes") + " has been reached.");
+            }
         } else {
             sender.sendMessage(denyFromConsole);
         }

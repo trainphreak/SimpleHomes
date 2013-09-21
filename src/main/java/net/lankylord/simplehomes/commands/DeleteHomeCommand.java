@@ -54,8 +54,9 @@ public class DeleteHomeCommand extends SimpleHomesCommand {
             Player player = (Player) sender;
 
             String homeName = "default";
-            if (args.size() == 1 && sender.hasPermission("simplehomes.multihomes"))
+            if (args.size() == 1 && sender.hasPermission("simplehomes.multihomes")) {
                 homeName = args.get(0).toLowerCase();
+            }
 
             String section = player.getName().toLowerCase() + ".";
             if (plugin.getHomeFileManager().getHomes().contains(section)) {
@@ -63,7 +64,8 @@ public class DeleteHomeCommand extends SimpleHomesCommand {
                 home.set(homeName, null);
                 sender.sendMessage(ChatColor.YELLOW + homeName + " home deleted.");
             }
-        } else
+        } else {
             sender.sendMessage(denyFromConsole);
+        }
     }
 }
