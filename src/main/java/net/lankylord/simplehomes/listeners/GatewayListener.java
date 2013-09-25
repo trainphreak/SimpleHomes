@@ -30,13 +30,14 @@ import net.lankylord.simplehomes.managers.HomeManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-public class JoinListener implements Listener {
+public class GatewayListener implements Listener {
 
     private SimpleHomes simpleHomes;
     private HomeManager homeManager;
 
-    public JoinListener(SimpleHomes simpleHomes) {
+    public GatewayListener(SimpleHomes simpleHomes) {
         this.simpleHomes = simpleHomes;
         this.homeManager = simpleHomes.getHomeManager();
     }
@@ -44,5 +45,10 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         homeManager.loadPlayerHomes(event.getPlayer().getName().toLowerCase());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        homeManager.unloadPlayerHomes(event.getPlayer().getName().toLowerCase());
     }
 }

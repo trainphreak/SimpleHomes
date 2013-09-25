@@ -1,6 +1,7 @@
 package net.lankylord.simplehomes;
 
 import net.lankylord.simplehomes.commands.*;
+import net.lankylord.simplehomes.listeners.GatewayListener;
 import net.lankylord.simplehomes.managers.ConfigManager;
 import net.lankylord.simplehomes.managers.HomeFileManager;
 import net.lankylord.simplehomes.managers.HomeManager;
@@ -27,6 +28,7 @@ public class SimpleHomes extends JavaPlugin {
         this.configManager = new ConfigManager(this);
         homeFileManager.saveHomes();
         loadCommands();
+        loadListeners();
         loadMetrics();
         if (getConfig().getBoolean("AutoUpdater.Enabled", true)) {
             loadUpdater();
@@ -68,5 +70,9 @@ public class SimpleHomes extends JavaPlugin {
 
     public HomeManager getHomeManager() {
         return homeManager;
+    }
+
+    private void loadListeners() {
+        this.getServer().getPluginManager().registerEvents(new GatewayListener(this), this);
     }
 }
