@@ -63,12 +63,18 @@ public class HomeManager {
      * @return Amount of homes
      */
     public int getHomesSize(String playerName) {
-        return fileManager.getHomes().getConfigurationSection(playerName.toLowerCase()).getKeys(false).size();
+        if (fileManager.getHomes().contains(playerName.toLowerCase())) {
+            return fileManager.getHomes().getConfigurationSection(playerName.toLowerCase()).getKeys(false).size();
+        }
+        return 0;
     }
 
     private void saveHomeToFile(String playerName, Location location, String homeName) {
         ConfigurationSection home = fileManager.getHomes().getConfigurationSection(playerName.toLowerCase() + "." +
                 homeName.toLowerCase());
+        if (home == null) {
+            home = fileManager.getHomes().createSection(playerName.toLowerCase() + "." + homeName.toLowerCase());
+        }
 
         home.set("world", location.getWorld().getName());
         home.set("x", location.getBlockX());

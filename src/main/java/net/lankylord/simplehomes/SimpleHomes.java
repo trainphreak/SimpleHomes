@@ -20,13 +20,13 @@ public class SimpleHomes extends JavaPlugin {
     @Override
     public void onEnable() {
         this.getConfig().options().copyDefaults(true);
-        loadCommands();
         saveDefaultConfig();
         saveConfig();
         this.homeFileManager = new HomeFileManager(this);
         this.homeManager = new HomeManager(homeFileManager);
         this.configManager = new ConfigManager(this);
         homeFileManager.saveHomes();
+        loadCommands();
         loadMetrics();
         if (getConfig().getBoolean("AutoUpdater.Enabled", true)) {
             loadUpdater();

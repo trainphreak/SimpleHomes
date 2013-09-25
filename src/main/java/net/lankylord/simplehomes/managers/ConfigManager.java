@@ -43,7 +43,7 @@ public class ConfigManager {
     }
 
     private void setMaxHomes() {
-        this.maxHomes = getConfig().getInt("Max-Homes");
+        this.maxHomes = getConfig().getInt("MaxHomes");
     }
 
     public static int getMaxHomes() {
