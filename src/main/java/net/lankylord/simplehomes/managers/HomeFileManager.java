@@ -28,6 +28,7 @@ package net.lankylord.simplehomes.managers;
 import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;

@@ -4,7 +4,7 @@
 
     <groupId>net.lankylord</groupId>
     <artifactId>SimpleHomes</artifactId>
-    <version>1.7</version>
+    <version>2.0</version>
     <packaging>jar</packaging>
 
     <name>SimpleHomes</name>
@@ -17,10 +17,6 @@
         <repository>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>randombox-repo</id>
-            <url>http://repo.onarandombox.com/content/groups/public</url>
         </repository>
         <repository>
             <id>Plugin Metrics</id>
@@ -54,15 +50,10 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <artifactSet>
                         <includes>
-                            <include>com.pneumaticraft.commandhandler:CommandHandler</include>
                             <include>org.mcstats.bukkit:metrics-lite</include>
                         </includes>
                     </artifactSet>
                     <relocations>
-                        <relocation>
-                            <pattern>com.pneumaticraft.commandhandler</pattern>
-                            <shadedPattern>net.lankylord.simplehomes.util.commandhandler</shadedPattern>
-                        </relocation>
                         <relocation>
                             <pattern>org.mcstats</pattern>
                             <shadedPattern>net.lankylord.simplehomes.util.mcstats</shadedPattern>
@@ -85,13 +76,6 @@
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.5.2-R1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.pneumaticraft.commandhandler</groupId>
-            <artifactId>CommandHandler</artifactId>
-            <version>7</version>
-            <type>jar</type>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.mcstats.bukkit</groupId>
