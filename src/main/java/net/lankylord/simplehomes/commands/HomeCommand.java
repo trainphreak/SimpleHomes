@@ -27,49 +27,46 @@
 package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.SimpleHomes;
-import org.bukkit.Bukkit;
+import net.lankylord.simplehomes.managers.HomeManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionDefault;
-
-import java.util.List;
 
 /** @author cedeel */
-public class HomeCommand extends SimpleHomesCommand {
+public class HomeCommand implements CommandExecutor {
+
+    private final SimpleHomes simpleHomes;
+    private final HomeManager homeManager;
 
     public HomeCommand(SimpleHomes plugin) {
-        super(plugin);
-        this.setName("SimpleHomes: Home");
-        this.setCommandUsage("/home [HomeName]");
-        this.setArgRange(0, 1);
-        this.addKey("home");
-        this.setPermission("simplehomes.homes", "Allows this user access to basic home commands", PermissionDefault.TRUE);
+        simpleHomes = plugin;
+        homeManager = plugin.getHomeManager();
     }
 
     @Override
-    public void runCommand(CommandSender sender, List<String> args) {
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-
             String homeName = "default";
-            if (args.size() == 1 && sender.hasPermission("simplehomes.multihomes"))
-                homeName = args.get(0).toLowerCase();
-
-            String section = player.getName().toLowerCase() + "." + homeName;
-            if (plugin.getHomeFileManager().getHomes().contains(section)) {
-                ConfigurationSection home = plugin.getHomeFileManager().getHomes().getConfigurationSection(section);
-                String w = home.getString("world");
-                int x = home.getInt("x"),
-                        y = home.getInt("y"),
-                        z = home.getInt("z");
-                player.teleport(new Location(Bukkit.getWorld(w), x, y, z));
-                player.sendMessage(ChatColor.YELLOW + "Teleported.");
+            if (strings.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
+                homeName = strings[0].toLowerCase();
             }
-        } else {
-            sender.sendMessage(denyFromConsole);
+            Location home = homeManager.getPlayerHome(player.getName(), homeName);
+            if (home != null) {
+                player.teleport(home);
+                player.sendMessage(ChatColor.YELLOW + "Teleported.");
+                return true;
+            } else {
+                player.sendMessage(ChatColor.RED + "No home found.");
+                return true;
+            }
         }
+        sender.sendMessage(ChatColor.RED + "Only players may issue that command.");
+        return true;
     }
 }
+    
+

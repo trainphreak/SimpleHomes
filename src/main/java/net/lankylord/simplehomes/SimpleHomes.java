@@ -1,40 +1,38 @@
 package net.lankylord.simplehomes;
 
-import com.pneumaticraft.commandhandler.CommandHandler;
 import net.lankylord.simplehomes.commands.*;
+import net.lankylord.simplehomes.listeners.GatewayListener;
+import net.lankylord.simplehomes.managers.ConfigManager;
 import net.lankylord.simplehomes.managers.HomeFileManager;
-import net.lankylord.simplehomes.util.PermissionsModule;
+import net.lankylord.simplehomes.managers.HomeManager;
 import net.lankylord.simplehomes.util.Updater;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 
 public class SimpleHomes extends JavaPlugin {
 
-    private final HomeFileManager homeFileManager;
-    private CommandHandler commandHandler;
-
-    public SimpleHomes() {
-        this.homeFileManager = new HomeFileManager(this);
-    }
+    private HomeFileManager homeFileManager;
+    private HomeManager homeManager;
+    private ConfigManager configManager;
 
     @Override
     public void onEnable() {
         this.getConfig().options().copyDefaults(true);
-        loadCommands();
         saveDefaultConfig();
-        homeFileManager.saveHomes();
         saveConfig();
+        this.homeFileManager = new HomeFileManager(this);
+        this.homeManager = new HomeManager(homeFileManager);
+        this.configManager = new ConfigManager(this);
+        homeFileManager.saveHomes();
+        loadCommands();
+        loadListeners();
         loadMetrics();
-        if (getConfig().getBoolean("AutoUpdater.Enabled", true))
+        if (getConfig().getBoolean("AutoUpdater.Enabled", true)) {
             loadUpdater();
+        }
         getLogger().info("[SimpleHomes] SimpleHomes Enabled!");
     }
 
@@ -42,14 +40,6 @@ public class SimpleHomes extends JavaPlugin {
     public void onDisable() {
         homeFileManager.saveHomes();
         getLogger().log(Level.INFO, "SimpleHomes Disabled!");
-    }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        List<String> allArgs = new ArrayList<>();
-        allArgs.addAll(Arrays.asList(args));
-        allArgs.add(0, label);
-        return commandHandler.locateAndRunCommand(sender, allArgs);
     }
 
     private void loadMetrics() {
@@ -67,16 +57,22 @@ public class SimpleHomes extends JavaPlugin {
     }
 
     private void loadCommands() {
-        PermissionsModule pm = new PermissionsModule();
-        commandHandler = new CommandHandler(this, pm);
-        commandHandler.registerCommand(new DeleteHomeCommand(this));
-        commandHandler.registerCommand(new HomeCommand(this));
-        commandHandler.registerCommand(new OtherHomeCommand(this));
-        commandHandler.registerCommand(new SetHomeCommand(this));
-        commandHandler.registerCommand(new HomeListCommand(this));
+        this.getCommand("delhome").setExecutor(new DeleteHomeCommand(this));
+        this.getCommand("home").setExecutor(new HomeCommand(this));
+        this.getCommand("homelist").setExecutor(new HomeListCommand(this));
+        this.getCommand("otherhome").setExecutor(new OtherHomeCommand(this));
+        this.getCommand("sethome").setExecutor(new SetHomeCommand(this));
     }
 
     public HomeFileManager getHomeFileManager() {
         return homeFileManager;
+    }
+
+    public HomeManager getHomeManager() {
+        return homeManager;
+    }
+
+    private void loadListeners() {
+        this.getServer().getPluginManager().registerEvents(new GatewayListener(this), this);
     }
 }

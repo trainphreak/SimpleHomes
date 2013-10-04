@@ -27,59 +27,43 @@
 package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.SimpleHomes;
+import net.lankylord.simplehomes.managers.HomeManager;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionDefault;
-
-import java.util.List;
 
 /** @author cedeel */
-public class SetHomeCommand extends SimpleHomesCommand {
+public class SetHomeCommand implements CommandExecutor {
+
+    private SimpleHomes simpleHomes;
+    private HomeManager homeManager;
 
     public SetHomeCommand(SimpleHomes plugin) {
-        super(plugin);
-        this.setName("SimpleHomes: Set Home");
-        this.setCommandUsage("/home set [HomeName]");
-        this.setArgRange(0, 1);
-        this.addKey("sethome");
-        this.addKey("home set");
-        this.setPermission("simplehomes.homes", "Allows this user access to basic home commands", PermissionDefault.TRUE);
+        simpleHomes = plugin;
+        homeManager = plugin.getHomeManager();
     }
 
     @Override
-    public void runCommand(CommandSender sender, List<String> args) {
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (plugin.getHomeFileManager().getHomes().get(player.getName().toLowerCase()) == null)
-                plugin.getHomeFileManager().getHomes().createSection(player.getName().toLowerCase());
-
-            int homes = plugin.getHomeFileManager().getHomes().getConfigurationSection(player.getName().toLowerCase()).getKeys(false).size();
-            if (homes < plugin.getConfig().getInt("MaxHomes")) {
-                Location coords = player.getLocation();
-
+            if (!homeManager.reachedMaxHomes(player.getName())) {
                 String homeName = "default";
-                if (args.size() == 1 && sender.hasPermission("simplehomes.multihomes"))
-                    homeName = args.get(0).toLowerCase();
-
-                String section = player.getName().toLowerCase() + "." + homeName;
-                if (plugin.getHomeFileManager().getHomes().get(section) == null)
-                    plugin.getHomeFileManager().getHomes().createSection(section);
-
-                ConfigurationSection home = plugin.getHomeFileManager().getHomes().getConfigurationSection(section);
-
-                home.set("world", player.getWorld().getName());
-                home.set("x", coords.getBlockX());
-                home.set("y", coords.getBlockY());
-                home.set("z", coords.getBlockZ());
-                plugin.getHomeFileManager().saveHomes();
-                sender.sendMessage(ChatColor.YELLOW + "Home set.");
-            } else
-                player.sendMessage("Home cannot be set. The max of " + plugin.getConfig().getInt("MaxHomes") + " has been reached.");
+                if (strings.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
+                    homeName = strings[0].toLowerCase();
+                }
+                homeManager.saveHome(player, homeName);
+                player.sendMessage(ChatColor.YELLOW + "Home set.");
+                return true;
+            } else {
+                player.sendMessage(ChatColor.RED + "Home cannot be set. The max number of homes has been reached.");
+                return true;
+            }
         } else {
-            sender.sendMessage(denyFromConsole);
+            sender.sendMessage(ChatColor.RED + "Only players may issue that command.");
         }
+        return false;
     }
 }

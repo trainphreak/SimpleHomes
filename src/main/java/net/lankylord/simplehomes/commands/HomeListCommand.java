@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2013 cedeel.
  * All rights reserved.
- * 
- * 
+ *
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -12,7 +12,7 @@
  *       documentation and/or other materials provided with the distribution.
  *     * The name of the author may not be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -27,40 +27,52 @@
 package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.SimpleHomes;
+import net.lankylord.simplehomes.managers.HomeManager;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionDefault;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.Set;
 
 /** @author cedeel */
-public class HomeListCommand extends SimpleHomesCommand {
+public class HomeListCommand implements CommandExecutor {
+
+    private final SimpleHomes simpleHomes;
+    private final HomeManager homeManager;
 
     public HomeListCommand(SimpleHomes plugin) {
-        super(plugin);
-        this.setName("SimpleHomes: List Homes");
-        this.setCommandUsage("/home list");
-        this.setArgRange(0, 0);
-        this.addKey("homelist");
-        this.addKey("home list");
-        this.setPermission("simplehomes.homes", "Allows this user access to basic home commands", PermissionDefault.TRUE);
+        simpleHomes = plugin;
+        homeManager = plugin.getHomeManager();
     }
 
     @Override
-    public void runCommand(CommandSender sender, List<String> args) {
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (sender instanceof Player) {
-            Player p = (Player) sender;
-
-            String section = p.getName().toLowerCase();
-            if (plugin.getHomeFileManager().getHomes().contains(section)) {
-                ConfigurationSection home = plugin.getHomeFileManager().getHomes().getConfigurationSection(section);
-                for (String s : home.getKeys(false))
-                    sender.sendMessage(ChatColor.YELLOW + s);
+            Player player = (Player) sender;
+            Set<String> homeSet = homeManager.getPlayerHomes(player.getName().toLowerCase()).keySet();
+            String[] homeString = homeSet.toArray(new String[homeSet.size()]);
+            Arrays.sort(homeString);
+            int size = homeSet.size();
+            if (size != 0) {
+                StringBuilder builder = new StringBuilder();
+                if (size > 1) {
+                    for (int i = 0; i < size - 1; i++) {
+                        builder.append(homeString[i]).append(", ");
+                    }
+                }
+                builder.append(homeString[size - 1]);
+                String homes = builder.toString();
+                player.sendMessage(ChatColor.YELLOW + "Homes: " + homes);
+                return true;
+            } else {
+                player.sendMessage(ChatColor.RED + "No homes found.");
+                return true;
             }
-        } else {
-            sender.sendMessage(denyFromConsole);
         }
+        sender.sendMessage(ChatColor.RED + "Only players may issue that command.");
+        return false;
     }
 }

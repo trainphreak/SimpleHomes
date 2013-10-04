@@ -28,6 +28,7 @@ package net.lankylord.simplehomes.managers;
 import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,14 +47,16 @@ public class HomeFileManager {
     }
 
     public FileConfiguration getHomes() {
-        if (homes == null)
+        if (homes == null) {
             this.reloadHomes();
+        }
         return homes;
     }
 
     void reloadHomes() {
-        if (homesFile == null)
+        if (homesFile == null) {
             homesFile = new File(instance.getDataFolder(), "Homes.yml");
+        }
         homes = YamlConfiguration.loadConfiguration(homesFile);
 
         InputStream defHomes = instance.getResource("Homes.yml");
@@ -64,8 +67,9 @@ public class HomeFileManager {
     }
 
     public void saveHomes() {
-        if (homes == null || homesFile == null)
+        if (homes == null || homesFile == null) {
             return;
+        }
         try {
             getHomes().save(homesFile);
         } catch (IOException ex) {
