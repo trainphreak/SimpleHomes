@@ -7,9 +7,6 @@ import net.lankylord.simplehomes.managers.HomeFileManager;
 import net.lankylord.simplehomes.managers.HomeManager;
 import net.lankylord.simplehomes.util.Updater;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.MetricsLite;
-
-import java.io.IOException;
 import java.util.logging.Level;
 
 public class SimpleHomes extends JavaPlugin {
@@ -29,7 +26,6 @@ public class SimpleHomes extends JavaPlugin {
         homeFileManager.saveHomes();
         loadCommands();
         loadListeners();
-        loadMetrics();
         if (getConfig().getBoolean("AutoUpdater.Enabled", true)) {
             loadUpdater();
         }
@@ -40,15 +36,6 @@ public class SimpleHomes extends JavaPlugin {
     public void onDisable() {
         homeFileManager.saveHomes();
         getLogger().log(Level.INFO, "SimpleHomes Disabled!");
-    }
-
-    private void loadMetrics() {
-        try {
-            MetricsLite metrics = new MetricsLite(this);
-            metrics.start();
-        } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Failed to submit stats.");
-        }
     }
 
     private void loadUpdater() {
