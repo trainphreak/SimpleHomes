@@ -1,7 +1,6 @@
 #SimpleHomes
 
-SimpleHomes is a bukkit plugin designed to implement a home system in a lightweight fashion, allowing players to set a home and then teleport back to it through the use of commands.
-
+SimpleHomes is a plugin designed to implement an efficient and lightweight homes system for Bukkit servers. It enables players to easily set a location as their home and provides them with the ability to teleport back to it.
 ##Compilation
 
 We use maven to handle our dependencies.
