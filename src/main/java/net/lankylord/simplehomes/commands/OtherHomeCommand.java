@@ -28,7 +28,7 @@ package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.SimpleHomes;
 import net.lankylord.simplehomes.managers.HomeManager;
-import org.bukkit.ChatColor;
+import net.lankylord.simplehomes.managers.languages.LanguageManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -61,14 +61,14 @@ public class OtherHomeCommand implements CommandExecutor {
             }
             if (location != null) {
                 player.teleport(location);
-                player.sendMessage(ChatColor.YELLOW + "Teleported to " + targetName + "'s home.");
+                player.sendMessage(LanguageManager.TELEPORT_OTHERHOME.replaceAll("%p", targetName));
                 return true;
             } else {
-                player.sendMessage(ChatColor.RED + "Home not found.");
+                player.sendMessage(LanguageManager.HOME_NOT_FOUND);
                 return true;
             }
         }
-        sender.sendMessage(ChatColor.RED + "Only players may issue that command.");
+        sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
         return false;
     }
 }

@@ -5,14 +5,19 @@ import net.lankylord.simplehomes.listeners.GatewayListener;
 import net.lankylord.simplehomes.managers.ConfigManager;
 import net.lankylord.simplehomes.managers.HomeFileManager;
 import net.lankylord.simplehomes.managers.HomeManager;
+import net.lankylord.simplehomes.managers.languages.LanguageFileManager;
+import net.lankylord.simplehomes.managers.languages.LanguageManager;
 import net.lankylord.simplehomes.util.Updater;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.logging.Level;
 
 public class SimpleHomes extends JavaPlugin {
 
     private HomeFileManager homeFileManager;
     private HomeManager homeManager;
+    private LanguageFileManager languageFileManager;
+    private LanguageManager languageManager;
     private ConfigManager configManager;
 
     @Override
@@ -22,6 +27,9 @@ public class SimpleHomes extends JavaPlugin {
         saveConfig();
         this.homeFileManager = new HomeFileManager(this);
         this.homeManager = new HomeManager(homeFileManager);
+        this.languageFileManager = new LanguageFileManager(this);
+        languageFileManager.saveLanguages();
+        this.languageManager = new LanguageManager(languageFileManager);
         this.configManager = new ConfigManager(this);
         homeFileManager.saveHomes();
         loadCommands();

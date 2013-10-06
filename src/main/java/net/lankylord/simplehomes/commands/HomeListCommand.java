@@ -28,7 +28,7 @@ package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.SimpleHomes;
 import net.lankylord.simplehomes.managers.HomeManager;
-import org.bukkit.ChatColor;
+import net.lankylord.simplehomes.managers.languages.LanguageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -65,14 +65,14 @@ public class HomeListCommand implements CommandExecutor {
                 }
                 builder.append(homeString[size - 1]);
                 String homes = builder.toString();
-                player.sendMessage(ChatColor.YELLOW + "Homes: " + homes);
+                player.sendMessage(LanguageManager.HOME_LIST_PREFIX + " " + homes);
                 return true;
             } else {
-                player.sendMessage(ChatColor.RED + "No homes found.");
+                player.sendMessage(LanguageManager.NO_HOMES_FOUND);
                 return true;
             }
         }
-        sender.sendMessage(ChatColor.RED + "Only players may issue that command.");
+        sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
         return false;
     }
 }

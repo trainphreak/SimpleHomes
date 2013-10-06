@@ -28,7 +28,7 @@ package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.SimpleHomes;
 import net.lankylord.simplehomes.managers.HomeManager;
-import org.bukkit.ChatColor;
+import net.lankylord.simplehomes.managers.languages.LanguageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -55,14 +55,14 @@ public class SetHomeCommand implements CommandExecutor {
                     homeName = strings[0].toLowerCase();
                 }
                 homeManager.saveHome(player, homeName);
-                player.sendMessage(ChatColor.YELLOW + "Home set.");
+                player.sendMessage(LanguageManager.HOME_SET);
                 return true;
             } else {
-                player.sendMessage(ChatColor.RED + "Home cannot be set. The max number of homes has been reached.");
+                player.sendMessage(LanguageManager.HOME_NOT_SET);
                 return true;
             }
         } else {
-            sender.sendMessage(ChatColor.RED + "Only players may issue that command.");
+            sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
         }
         return false;
     }
