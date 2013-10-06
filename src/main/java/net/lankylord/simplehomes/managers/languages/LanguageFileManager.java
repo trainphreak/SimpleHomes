@@ -42,6 +42,7 @@ public class LanguageFileManager {
     private File languageFile = null;
 
     public LanguageFileManager(SimpleHomes instance) {
+        saveDefaultLanguages();
         this.instance = instance;
     }
 
@@ -73,6 +74,15 @@ public class LanguageFileManager {
             getLanguageConfig().save(languageFile);
         } catch (IOException ex) {
             instance.getLogger().log(Level.SEVERE, "Could not save languages file to " + languageFile, ex);
+        }
+    }
+
+    public void saveDefaultLanguages() {
+        if (languageFile == null) {
+            languageFile = new File(instance.getDataFolder(), "languages.yml");
+        }
+        if (!languageFile.exists()) {
+            instance.saveResource("languages.yml", false);
         }
     }
 }
