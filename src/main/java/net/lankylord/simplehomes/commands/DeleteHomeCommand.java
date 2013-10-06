@@ -28,7 +28,7 @@ package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.SimpleHomes;
 import net.lankylord.simplehomes.managers.HomeManager;
-import org.bukkit.ChatColor;
+import net.lankylord.simplehomes.managers.languages.LanguageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -54,10 +54,10 @@ public class DeleteHomeCommand implements CommandExecutor {
                 homeName = strings[0].toLowerCase();
             }
             homeManager.deleteHome(player.getName().toLowerCase(), homeName);
-            player.sendMessage(ChatColor.YELLOW + "Home deleted.");
+            player.sendMessage(LanguageManager.HOME_DELETED);
             return true;
         }
-        sender.sendMessage(ChatColor.RED + "Only players may issue that command.");
+        sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
         return true;
     }
 }
