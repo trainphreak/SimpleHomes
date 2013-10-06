@@ -36,8 +36,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class GatewayListener implements Listener {
 
-    private SimpleHomes simpleHomes;
-    private HomeManager homeManager;
+    private final SimpleHomes simpleHomes;
+    private final HomeManager homeManager;
 
     public GatewayListener(SimpleHomes simpleHomes) {
         this.simpleHomes = simpleHomes;

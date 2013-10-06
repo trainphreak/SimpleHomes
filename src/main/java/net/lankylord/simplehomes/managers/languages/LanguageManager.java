@@ -42,11 +42,9 @@ public class LanguageManager {
     public static String TELEPORT_OTHERHOME = ChatColor.YELLOW + "Teleported to %p's home.";
     public static String TELEPORT_SUCCESS = ChatColor.YELLOW + "Teleported.";
 
-    private LanguageFileManager fileManager;
-    private FileConfiguration languageConfig;
+    private final FileConfiguration languageConfig;
 
     public LanguageManager(LanguageFileManager fileManager) {
-        this.fileManager = fileManager;
         languageConfig = fileManager.getLanguageConfig();
         loadMessages();
     }

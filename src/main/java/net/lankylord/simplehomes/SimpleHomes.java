@@ -16,9 +16,6 @@ public class SimpleHomes extends JavaPlugin {
 
     private HomeFileManager homeFileManager;
     private HomeManager homeManager;
-    private LanguageFileManager languageFileManager;
-    private LanguageManager languageManager;
-    private ConfigManager configManager;
 
     private boolean updateAvailable = false;
 
@@ -29,17 +26,17 @@ public class SimpleHomes extends JavaPlugin {
         saveConfig();
         this.homeFileManager = new HomeFileManager(this);
         this.homeManager = new HomeManager(homeFileManager);
-        this.languageFileManager = new LanguageFileManager(this);
+        LanguageFileManager languageFileManager = new LanguageFileManager(this);
         languageFileManager.saveLanguages();
-        this.languageManager = new LanguageManager(languageFileManager);
-        this.configManager = new ConfigManager(this);
+        new LanguageManager(languageFileManager);
+        new ConfigManager(this);
         homeFileManager.saveHomes();
         loadCommands();
         loadListeners();
         if (getConfig().getBoolean("AutoUpdater.Enabled", true)) {
             loadUpdater();
         }
-        getLogger().info("[SimpleHomes] SimpleHomes Enabled!");
+        getLogger().info("SimpleHomes Enabled!");
     }
 
     @Override
@@ -69,7 +66,7 @@ public class SimpleHomes extends JavaPlugin {
                     getLogger().log(Level.INFO, "AutoUpdater Enabled: Invalid Mode - Defaulting to Notify");
                     break;
             }
-            Updater updater = new Updater(this, "simplehomes", this.getFile(), updateType, false);
+            Updater updater = new Updater(this, this.getFile(), updateType);
             Updater.UpdateResult updateResult = updater.getResult();
             switch (updateResult) {
                 case SUCCESS:

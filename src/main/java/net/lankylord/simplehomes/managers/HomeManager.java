@@ -35,8 +35,8 @@ import java.util.Map;
 
 public class HomeManager {
 
-    private HomeFileManager fileManager;
-    private Map<String, Map> loadedHomes;
+    private final HomeFileManager fileManager;
+    private final Map<String, Map> loadedHomes;
 
     public HomeManager(HomeFileManager fileManager) {
         this.fileManager = fileManager;
@@ -50,10 +50,7 @@ public class HomeManager {
      * @return Whether a player has reached the maximum amount of homes
      */
     public boolean reachedMaxHomes(String playerName) {
-        if (getHomesSize(playerName) >= ConfigManager.getMaxHomes()) {
-            return true;
-        }
-        return false;
+        return getHomesSize(playerName) < ConfigManager.getMaxHomes();
     }
 
     /**
@@ -94,7 +91,7 @@ public class HomeManager {
         String playerName = player.getName().toLowerCase();
         Location location = player.getLocation();
 
-        Map homeLocation = loadedHomes.get(playerName);
+        Map<String, Location> homeLocation = loadedHomes.get(playerName);
         if (homeLocation == null) {
             homeLocation = new HashMap<>();
         }
@@ -123,7 +120,7 @@ public class HomeManager {
      * @param location   Location of the home
      */
     public void saveHome(String playerName, String homeName, Location location) {
-        Map homeLocation = loadedHomes.get(playerName);
+        Map<String, Location> homeLocation = loadedHomes.get(playerName);
         if (homeLocation == null) {
             homeLocation = new HashMap<>();
         }

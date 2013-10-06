@@ -38,11 +38,9 @@ import org.bukkit.entity.Player;
 /** @author cedeel */
 public class HomeCommand implements CommandExecutor {
 
-    private final SimpleHomes simpleHomes;
     private final HomeManager homeManager;
 
     public HomeCommand(SimpleHomes plugin) {
-        simpleHomes = plugin;
         homeManager = plugin.getHomeManager();
     }
 

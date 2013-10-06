@@ -46,21 +46,21 @@ import java.util.zip.ZipFile;
  */
 public class Updater {
 
-    private Plugin plugin;
-    private UpdateType type;
+    private final Plugin plugin;
+    private final UpdateType type;
     private String versionTitle;
     private String versionLink;
     private long totalSize; // Holds the total size of the file
     //private double downloadedSize; TODO: Holds the number of bytes downloaded
     private int sizeLine; // Used for detecting file size
-    private boolean announce; // Whether to announce file downloads
+    private final boolean announce; // Whether to announce file downloads
     private URL url; // Connecting to RSS
-    private File file; // The plugin's file
-    private Thread thread; // Updater thread
+    private final File file; // The plugin's file
+    private final Thread thread; // Updater thread
     private static final String DBOUrl = "http://dev.bukkit.org/server-mods/"; // Slugs will be appended to this to get to the project's RSS feed
-    private String[] noUpdateTag = {"-DEV", "-PRE", "-SNAPSHOT"}; // If the version number contains one of these, don't update.
+    private final String[] noUpdateTag = {"-DEV", "-PRE", "-SNAPSHOT"}; // If the version number contains one of these, don't update.
     private static final int BYTE_SIZE = 1024; // Used for downloading files
-    private String updateFolder = YamlConfiguration.loadConfiguration(new File("bukkit.yml")).getString("settings.update-folder"); // The folder that downloads will be placed in
+    private final String updateFolder = YamlConfiguration.loadConfiguration(new File("bukkit.yml")).getString("settings.update-folder"); // The folder that downloads will be placed in
     private Updater.UpdateResult result = Updater.UpdateResult.SUCCESS; // Used for determining the outcome of the update process
     // Strings for reading RSS
     private static final String TITLE = "title";
@@ -128,27 +128,23 @@ public class Updater {
      * Initialize the updater
      *
      * @param plugin   The plugin that is checking for an update.
-     * @param slug     The dev.bukkit.org slug of the project
-     *                 (http://dev.bukkit.org/server-mods/SLUG_IS_HERE)
      * @param file     The file that the plugin is running from, get this by doing
      *                 this.getFile() from within your main class.
      * @param type     Specify the type of update this will be. See
-     *                 {@link UpdateType}
-     * @param announce True if the program should announce the progress of new
-     *                 updates in console
+*                 {@link net.lankylord.simplehomes.util.Updater.UpdateType}
      */
-    public Updater(Plugin plugin, String slug, File file, UpdateType type, boolean announce) {
+    public Updater(Plugin plugin, File file, UpdateType type) {
         this.plugin = plugin;
         this.type = type;
-        this.announce = announce;
+        this.announce = false;
         this.file = file;
         try {
             // Obtain the results of the project's file feed
-            url = new URL(DBOUrl + slug + "/files.rss");
+            url = new URL(DBOUrl + "simplehomes" + "/files.rss");
         } catch (MalformedURLException ex) {
             // Invalid slug
             plugin.getLogger().log(Level.WARNING, "The author of this plugin ({0}) has misconfigured their Auto Update system", plugin.getDescription().getAuthors().get(0));
-            plugin.getLogger().log(Level.WARNING, "The project slug given (''{0}'') is invalid. Please nag the author about this.", slug);
+            plugin.getLogger().log(Level.WARNING, "The project slug given (''{0}'') is invalid. Please nag the author about this.", "simplehomes");
             result = Updater.UpdateResult.FAIL_BADSLUG; // Bad slug! Bad!
         }
         thread = new Thread(new UpdateRunnable());
@@ -185,7 +181,7 @@ public class Updater {
         if (thread.isAlive()) {
             try {
                 thread.join();
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ignored) {
             }
         }
     }
@@ -244,7 +240,7 @@ public class Updater {
                 if (fout != null) {
                     fout.close();
                 }
-            } catch (Exception ex) {
+            } catch (Exception ignored) {
             }
         }
     }
@@ -257,7 +253,7 @@ public class Updater {
             try (ZipFile zipFile = new ZipFile(fSourceZip)) {
                 Enumeration<? extends ZipEntry> e = zipFile.entries();
                 while (e.hasMoreElements()) {
-                    ZipEntry entry = (ZipEntry) e.nextElement();
+                    ZipEntry entry = e.nextElement();
                     File destinationFilePath = new File(zipPath, entry.getName());
                     destinationFilePath.getParentFile().mkdirs();
                     if (entry.isDirectory()) {
@@ -457,7 +453,6 @@ public class Updater {
                         if (event.asStartElement().getName().getLocalPart().equals(LINK)) {
                             event = eventReader.nextEvent();
                             link = event.asCharacters().getData();
-                            continue;
                         }
                     } else if (event.isEndElement()) {
                         if (event.asEndElement().getName().getLocalPart().equals(ITEM)) {

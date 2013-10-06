@@ -30,7 +30,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class ConfigManager {
 
-    private SimpleHomes simpleHomes;
+    private final SimpleHomes simpleHomes;
     private static int maxHomes;
 
     public ConfigManager(SimpleHomes simpleHomes) {
@@ -43,7 +43,7 @@ public class ConfigManager {
     }
 
     private void setMaxHomes() {
-        this.maxHomes = getConfig().getInt("MaxHomes");
+        maxHomes = getConfig().getInt("MaxHomes");
     }
 
     public static int getMaxHomes() {

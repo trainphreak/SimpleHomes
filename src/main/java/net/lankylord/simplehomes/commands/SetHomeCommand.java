@@ -1,8 +1,8 @@
 /*
  * Copyright (c) 2013 cedeel.
  * All rights reserved.
- * 
- * 
+ *
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -12,7 +12,7 @@
  *       documentation and/or other materials provided with the distribution.
  *     * The name of the author may not be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS ``AS IS''
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -37,11 +37,9 @@ import org.bukkit.entity.Player;
 /** @author cedeel */
 public class SetHomeCommand implements CommandExecutor {
 
-    private SimpleHomes simpleHomes;
-    private HomeManager homeManager;
+    private final HomeManager homeManager;
 
     public SetHomeCommand(SimpleHomes plugin) {
-        simpleHomes = plugin;
         homeManager = plugin.getHomeManager();
     }
 
@@ -49,7 +47,7 @@ public class SetHomeCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (!homeManager.reachedMaxHomes(player.getName())) {
+            if (homeManager.reachedMaxHomes(player.getName())) {
                 String homeName = "default";
                 if (strings.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
                     homeName = strings[0].toLowerCase();

@@ -37,11 +37,9 @@ import org.bukkit.entity.Player;
 /** @author LankyLord */
 public class DeleteHomeCommand implements CommandExecutor {
 
-    private SimpleHomes simpleHomes;
-    private HomeManager homeManager;
+    private final HomeManager homeManager;
 
     public DeleteHomeCommand(SimpleHomes plugin) {
-        simpleHomes = plugin;
         homeManager = plugin.getHomeManager();
     }
 

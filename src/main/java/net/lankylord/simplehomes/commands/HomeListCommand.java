@@ -40,11 +40,9 @@ import java.util.Set;
 /** @author cedeel */
 public class HomeListCommand implements CommandExecutor {
 
-    private final SimpleHomes simpleHomes;
     private final HomeManager homeManager;
 
     public HomeListCommand(SimpleHomes plugin) {
-        simpleHomes = plugin;
         homeManager = plugin.getHomeManager();
     }
 
