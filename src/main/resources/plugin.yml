@@ -32,3 +32,5 @@ permissions:
     default: op
   simplehomes.multihomes:
     default: op
+  simplehomes.notify:
+    default: op

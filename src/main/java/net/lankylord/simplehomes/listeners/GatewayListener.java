@@ -27,6 +27,8 @@ package net.lankylord.simplehomes.listeners;
 
 import net.lankylord.simplehomes.SimpleHomes;
 import net.lankylord.simplehomes.managers.HomeManager;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -45,6 +47,12 @@ public class GatewayListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         homeManager.loadPlayerHomes(event.getPlayer().getName().toLowerCase());
+        Player player = event.getPlayer();
+        if (player.hasPermission("simplehomes.notify")) {
+            if (simpleHomes.isUpdateAvailable()) {
+                player.sendMessage(ChatColor.YELLOW + "[SimpleHomes] There is an update available on BukkitDev!");
+            }
+        }
     }
 
     @EventHandler

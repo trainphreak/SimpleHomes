@@ -20,6 +20,8 @@ public class SimpleHomes extends JavaPlugin {
     private LanguageManager languageManager;
     private ConfigManager configManager;
 
+    private boolean updateAvailable = false;
+
     @Override
     public void onEnable() {
         this.getConfig().options().copyDefaults(true);
@@ -47,8 +49,51 @@ public class SimpleHomes extends JavaPlugin {
     }
 
     private void loadUpdater() {
-        Updater updater = new Updater(this, "simplehomes", this.getFile(), Updater.UpdateType.DEFAULT, true);
-        getLogger().log(Level.INFO, "[SimpleHomes] AutoUpdater Enabled.");
+        if (getConfig().getBoolean("AutoUpdater.Enabled")) {
+            String mode = getConfig().getString("AutoUpdater.Mode");
+            Updater.UpdateType updateType;
+            switch (mode.toLowerCase()) {
+                case "update":
+                    //Update the plugin automatically
+                    updateType = Updater.UpdateType.DEFAULT;
+                    getLogger().log(Level.INFO, "AutoUpdater Enabled: Update");
+                    break;
+                case "notify":
+                    //Notify admins of available updates
+                    updateType = Updater.UpdateType.NO_DOWNLOAD;
+                    getLogger().log(Level.INFO, "AutoUpdater Enabled: Notify");
+                    break;
+                default:
+                    //Default to notification mode
+                    updateType = Updater.UpdateType.NO_DOWNLOAD;
+                    getLogger().log(Level.INFO, "AutoUpdater Enabled: Invalid Mode - Defaulting to Notify");
+                    break;
+            }
+            Updater updater = new Updater(this, "simplehomes", this.getFile(), updateType, false);
+            Updater.UpdateResult updateResult = updater.getResult();
+            switch (updateResult) {
+                case SUCCESS:
+                    //Update detected and downloaded
+                    getLogger().log(Level.INFO, "Plugin will be updated at next restart");
+                    updateAvailable = true;
+                    break;
+                case FAIL_DOWNLOAD:
+                case FAIL_DBO:
+                case FAIL_NOVERSION:
+                    //Fail to get updates
+                    getLogger().log(Level.WARNING, "Plugin failed to check for updates");
+                    break;
+                case UPDATE_AVAILABLE:
+                    //Update detected but not downloaded
+                    getLogger().log(Level.INFO, "There is an update available on BukkitDev");
+                    updateAvailable = true;
+                    break;
+                case NO_UPDATE:
+                    //No update found
+                    getLogger().log(Level.INFO, "No update found.");
+                    break;
+            }
+        }
     }
 
     private void loadCommands() {
@@ -69,5 +114,14 @@ public class SimpleHomes extends JavaPlugin {
 
     private void loadListeners() {
         this.getServer().getPluginManager().registerEvents(new GatewayListener(this), this);
+    }
+
+    /**
+     * Check whether there is an update available
+     *
+     * @return If there is an update available on BukkitDev
+     */
+    public boolean isUpdateAvailable() {
+        return updateAvailable;
     }
 }

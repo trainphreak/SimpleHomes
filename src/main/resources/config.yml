@@ -1,4 +1,5 @@
 MaxHomes: 1
-
 AutoUpdater:
   Enabled: true
+  #Availible modes: update,notify
+  Mode: notify
