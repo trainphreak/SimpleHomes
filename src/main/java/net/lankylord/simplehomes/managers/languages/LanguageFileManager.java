@@ -42,8 +42,8 @@ public class LanguageFileManager {
     private File languageFile = null;
 
     public LanguageFileManager(SimpleHomes instance) {
-        saveDefaultLanguages();
         this.instance = instance;
+        saveDefaultLanguages();
     }
 
     public FileConfiguration getLanguageConfig() {

@@ -47,6 +47,7 @@ public class LanguageManager {
 
     public LanguageManager(LanguageFileManager fileManager) {
         this.fileManager = fileManager;
+        languageConfig = fileManager.getLanguageConfig();
         loadMessages();
     }
 
