@@ -56,14 +56,14 @@ public class LanguageManager {
     }
 
     private void loadMessages() {
-        HOME_DELETED = languageConfig.getString("home-deleted");
-        HOME_LIST_PREFIX = languageConfig.getString("home-list-prefix");
-        HOME_NOT_FOUND = languageConfig.getString("home-not-found");
-        HOME_NOT_SET = languageConfig.getString("home-max-reached");
-        HOME_SET = languageConfig.getString("home-set");
-        NO_HOMES_FOUND = languageConfig.getString("no-homes-found");
-        PLAYER_COMMAND_ONLY = languageConfig.getString("player-command-only");
-        TELEPORT_OTHERHOME = languageConfig.getString("teleport-otherhome");
-        TELEPORT_SUCCESS = languageConfig.getString("teleport-success");
+        HOME_DELETED = convertColours(languageConfig.getString("home-deleted"));
+        HOME_LIST_PREFIX = convertColours(languageConfig.getString("home-list-prefix"));
+        HOME_NOT_FOUND = convertColours(languageConfig.getString("home-not-found"));
+        HOME_NOT_SET = convertColours(languageConfig.getString("home-max-reached"));
+        HOME_SET = convertColours(languageConfig.getString("home-set"));
+        NO_HOMES_FOUND = convertColours(languageConfig.getString("no-homes-found"));
+        PLAYER_COMMAND_ONLY = convertColours(languageConfig.getString("player-command-only"));
+        TELEPORT_OTHERHOME = convertColours(languageConfig.getString("teleport-otherhome"));
+        TELEPORT_SUCCESS = convertColours(languageConfig.getString("teleport-success"));
     }
 }
