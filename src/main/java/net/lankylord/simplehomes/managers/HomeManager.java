@@ -137,19 +137,21 @@ public class HomeManager {
      */
     public void loadPlayerHomes(String playerName) {
         ConfigurationSection homes = fileManager.getHomes().getConfigurationSection(playerName.toLowerCase());
-        Map<String, Location> homeLocation = new HashMap<>();
+        if (homes != null) {
+            Map<String, Location> homeLocation = new HashMap<>();
 
-        for (String homeName : homes.getKeys(false)) {
-            ConfigurationSection home = homes.getConfigurationSection(homeName);
+            for (String homeName : homes.getKeys(false)) {
+                ConfigurationSection home = homes.getConfigurationSection(homeName);
 
-            String world = home.getString("world");
-            int x = home.getInt("x");
-            int y = home.getInt("y");
-            int z = home.getInt("z");
+                String world = home.getString("world");
+                int x = home.getInt("x");
+                int y = home.getInt("y");
+                int z = home.getInt("z");
 
-            homeLocation.put(homeName.toLowerCase(), new Location(Bukkit.getWorld(world), x, y, z));
+                homeLocation.put(homeName.toLowerCase(), new Location(Bukkit.getWorld(world), x, y, z));
+            }
+            loadedHomes.put(playerName.toLowerCase(), homeLocation);
         }
-        loadedHomes.put(playerName.toLowerCase(), homeLocation);
     }
 
     /**
