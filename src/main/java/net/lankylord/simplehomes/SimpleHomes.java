@@ -66,7 +66,7 @@ public class SimpleHomes extends JavaPlugin {
                     getLogger().log(Level.INFO, "AutoUpdater Enabled: Invalid Mode - Defaulting to Notify");
                     break;
             }
-            Updater updater = new Updater(this, this.getFile(), updateType);
+            Updater updater = new Updater(this, 48509, this.getFile(), updateType, true);
             Updater.UpdateResult updateResult = updater.getResult();
             switch (updateResult) {
                 case SUCCESS:
