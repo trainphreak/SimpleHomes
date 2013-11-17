@@ -42,8 +42,8 @@ public class HomeListCommand implements CommandExecutor {
 
     private final HomeManager homeManager;
 
-    public HomeListCommand(SimpleHomes plugin) {
-        homeManager = plugin.getHomeManager();
+    public HomeListCommand(HomeManager manager) {
+        homeManager = manager;
     }
 
     @Override

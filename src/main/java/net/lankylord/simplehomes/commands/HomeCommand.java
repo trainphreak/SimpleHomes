@@ -40,8 +40,8 @@ public class HomeCommand implements CommandExecutor {
 
     private final HomeManager homeManager;
 
-    public HomeCommand(SimpleHomes plugin) {
-        homeManager = plugin.getHomeManager();
+    public HomeCommand(HomeManager manager) {
+        homeManager = manager;
     }
 
     @Override

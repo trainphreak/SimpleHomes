@@ -66,8 +66,10 @@ public class SimpleHomes extends JavaPlugin {
                     getLogger().log(Level.INFO, "AutoUpdater Enabled: Invalid Mode - Defaulting to Notify");
                     break;
             }
+
             Updater updater = new Updater(this, 48509, this.getFile(), updateType, true);
             Updater.UpdateResult updateResult = updater.getResult();
+
             switch (updateResult) {
                 case SUCCESS:
                     //Update detected and downloaded
@@ -94,31 +96,14 @@ public class SimpleHomes extends JavaPlugin {
     }
 
     private void loadCommands() {
-        this.getCommand("delhome").setExecutor(new DeleteHomeCommand(this));
-        this.getCommand("home").setExecutor(new HomeCommand(this));
-        this.getCommand("homelist").setExecutor(new HomeListCommand(this));
-        this.getCommand("otherhome").setExecutor(new OtherHomeCommand(this));
-        this.getCommand("sethome").setExecutor(new SetHomeCommand(this));
-    }
-
-    public HomeFileManager getHomeFileManager() {
-        return homeFileManager;
-    }
-
-    public HomeManager getHomeManager() {
-        return homeManager;
+        this.getCommand("delhome").setExecutor(new DeleteHomeCommand(homeManager));
+        this.getCommand("home").setExecutor(new HomeCommand(homeManager));
+        this.getCommand("homelist").setExecutor(new HomeListCommand(homeManager));
+        this.getCommand("otherhome").setExecutor(new OtherHomeCommand(homeManager));
+        this.getCommand("sethome").setExecutor(new SetHomeCommand(homeManager));
     }
 
     private void loadListeners() {
-        this.getServer().getPluginManager().registerEvents(new GatewayListener(this), this);
-    }
-
-    /**
-     * Check whether there is an update available
-     *
-     * @return If there is an update available on BukkitDev
-     */
-    public boolean isUpdateAvailable() {
-        return updateAvailable;
+        this.getServer().getPluginManager().registerEvents(new GatewayListener(homeManager, updateAvailable), this);
     }
 }

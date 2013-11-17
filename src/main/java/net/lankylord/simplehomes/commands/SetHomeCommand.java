@@ -39,8 +39,8 @@ public class SetHomeCommand implements CommandExecutor {
 
     private final HomeManager homeManager;
 
-    public SetHomeCommand(SimpleHomes plugin) {
-        homeManager = plugin.getHomeManager();
+    public SetHomeCommand(HomeManager manager) {
+        homeManager = manager;
     }
 
     @Override

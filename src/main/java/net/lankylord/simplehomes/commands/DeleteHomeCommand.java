@@ -39,8 +39,8 @@ public class DeleteHomeCommand implements CommandExecutor {
 
     private final HomeManager homeManager;
 
-    public DeleteHomeCommand(SimpleHomes plugin) {
-        homeManager = plugin.getHomeManager();
+    public DeleteHomeCommand(HomeManager manager) {
+        homeManager = manager;
     }
 
     @Override

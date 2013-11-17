@@ -42,18 +42,15 @@ public class LanguageManager {
     public static String TELEPORT_OTHERHOME = ChatColor.YELLOW + "Teleported to %p's home.";
     public static String TELEPORT_SUCCESS = ChatColor.YELLOW + "Teleported.";
 
-    private final FileConfiguration languageConfig;
-
     public LanguageManager(LanguageFileManager fileManager) {
-        languageConfig = fileManager.getLanguageConfig();
-        loadMessages();
+        loadMessages(fileManager.getLanguageConfig());
     }
 
     private String convertColours(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
     }
 
-    private void loadMessages() {
+    private void loadMessages(FileConfiguration languageConfig) {
         HOME_DELETED = convertColours(languageConfig.getString("home-deleted"));
         HOME_LIST_PREFIX = convertColours(languageConfig.getString("home-list-prefix"));
         HOME_NOT_FOUND = convertColours(languageConfig.getString("home-not-found"));
