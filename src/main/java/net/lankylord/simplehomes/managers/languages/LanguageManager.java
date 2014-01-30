@@ -34,7 +34,7 @@ public class LanguageManager {
     public static String HOME_DELETED = ChatColor.YELLOW + "Home deleted.";
     public static String HOME_LIST_PREFIX = ChatColor.YELLOW + "Homes:";
     public static String HOME_NOT_FOUND = ChatColor.RED + "Home not found.";
-    public static String HOME_NOT_SET = ChatColor.RED + "Home cannot be set. The maximum number of homes has been " +
+    public static String HOME_MAX_REACHED = ChatColor.RED + "Home cannot be set. The maximum number of homes has been " +
             "reached";
     public static String HOME_SET = ChatColor.YELLOW + "Home set.";
     public static String NO_HOMES_FOUND = ChatColor.RED + "No homes found.";
@@ -54,7 +54,7 @@ public class LanguageManager {
         HOME_DELETED = convertColours(languageConfig.getString("home-deleted"));
         HOME_LIST_PREFIX = convertColours(languageConfig.getString("home-list-prefix"));
         HOME_NOT_FOUND = convertColours(languageConfig.getString("home-not-found"));
-        HOME_NOT_SET = convertColours(languageConfig.getString("home-max-reached"));
+        HOME_MAX_REACHED = convertColours(languageConfig.getString("home-max-reached"));
         HOME_SET = convertColours(languageConfig.getString("home-set"));
         NO_HOMES_FOUND = convertColours(languageConfig.getString("no-homes-found"));
         PLAYER_COMMAND_ONLY = convertColours(languageConfig.getString("player-command-only"));

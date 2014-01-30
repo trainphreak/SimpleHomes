@@ -50,7 +50,7 @@ public class HomeManager {
      * @return Whether a player has reached the maximum amount of homes
      */
     public boolean reachedMaxHomes(String playerName) {
-        return getHomesSize(playerName) < ConfigManager.getMaxHomes();
+        return getHomesSize(playerName) == ConfigManager.getMaxHomes();
     }
 
     /**
@@ -113,24 +113,6 @@ public class HomeManager {
     }
 
     /**
-     * Save a player's home
-     *
-     * @param playerName Name of the player
-     * @param homeName   Name of the home
-     * @param location   Location of the home
-     */
-    public void saveHome(String playerName, String homeName, Location location) {
-        Map<String, Location> homeLocation = loadedHomes.get(playerName);
-        if (homeLocation == null) {
-            homeLocation = new HashMap<>();
-        }
-        homeLocation.put(homeName.toLowerCase(), location);
-        loadedHomes.put(playerName, homeLocation);
-
-        saveHomeToFile(playerName, location, homeName);
-    }
-
-    /**
      * Load a player's homes from file
      *
      * @param playerName Name of the player
@@ -143,12 +125,16 @@ public class HomeManager {
             for (String homeName : homes.getKeys(false)) {
                 ConfigurationSection home = homes.getConfigurationSection(homeName);
 
-                String world = home.getString("world");
-                int x = home.getInt("x");
-                int y = home.getInt("y");
-                int z = home.getInt("z");
+                String world = home.getString("world", null);
+                int x = home.getInt("x", Integer.MIN_VALUE);
+                int y = home.getInt("y", Integer.MIN_VALUE);
+                int z = home.getInt("z", Integer.MIN_VALUE);
 
-                homeLocation.put(homeName.toLowerCase(), new Location(Bukkit.getWorld(world), x, y, z));
+                if (!(world == null || x == Integer.MIN_VALUE || y == Integer.MIN_VALUE || z == Integer.MIN_VALUE)) {
+                    homeLocation.put(homeName.toLowerCase(), new Location(Bukkit.getWorld(world), x, y, z));
+                } else {
+                    System.out.println("Error in home, not loaded.");
+                }
             }
             loadedHomes.put(playerName.toLowerCase(), homeLocation);
         }
@@ -194,7 +180,7 @@ public class HomeManager {
         return homeLocation.get(homeName.toLowerCase());
     }
 
-    public Map getPlayerHomes(String playerName) {
+    public Map<String, Location> getPlayerHomes(String playerName) {
         return loadedHomes.get(playerName.toLowerCase());
     }
 }

@@ -26,7 +26,6 @@
  */
 package net.lankylord.simplehomes.commands;
 
-import net.lankylord.simplehomes.SimpleHomes;
 import net.lankylord.simplehomes.managers.HomeManager;
 import net.lankylord.simplehomes.managers.languages.LanguageManager;
 import org.bukkit.command.Command;
@@ -44,21 +43,20 @@ public class SetHomeCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (homeManager.reachedMaxHomes(player.getName())) {
-                String homeName = "default";
-                if (strings.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
-                    homeName = strings[0].toLowerCase();
-                }
-                homeManager.saveHome(player, homeName);
-                player.sendMessage(LanguageManager.HOME_SET);
-                return true;
-            } else {
-                player.sendMessage(LanguageManager.HOME_NOT_SET);
+            String homeName = "default";
+            if (args.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
+                homeName = args[0].toLowerCase();
+            }
+            if (homeManager.reachedMaxHomes(player.getName()) && !homeManager.getPlayerHomes(player.getName()).containsKey(homeName)) {
+                player.sendMessage(LanguageManager.HOME_MAX_REACHED);
                 return true;
             }
+            homeManager.saveHome(player, homeName);
+            player.sendMessage(LanguageManager.HOME_SET);
+            return true;
         } else {
             sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
         }
