@@ -26,24 +26,13 @@
 package net.lankylord.simplehomes.managers;
 
 import net.lankylord.simplehomes.SimpleHomes;
-import org.bukkit.configuration.file.FileConfiguration;
 
 public class ConfigManager {
 
-    private final SimpleHomes simpleHomes;
     private static int maxHomes;
 
     public ConfigManager(SimpleHomes simpleHomes) {
-        this.simpleHomes = simpleHomes;
-        this.setMaxHomes();
-    }
-
-    private FileConfiguration getConfig() {
-        return simpleHomes.getConfig();
-    }
-
-    private void setMaxHomes() {
-        maxHomes = getConfig().getInt("MaxHomes");
+        maxHomes = simpleHomes.getConfig().getInt("MaxHomes", 1);
     }
 
     public static int getMaxHomes() {

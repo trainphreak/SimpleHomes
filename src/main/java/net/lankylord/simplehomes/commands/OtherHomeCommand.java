@@ -26,7 +26,6 @@
  */
 package net.lankylord.simplehomes.commands;
 
-import net.lankylord.simplehomes.SimpleHomes;
 import net.lankylord.simplehomes.managers.HomeManager;
 import net.lankylord.simplehomes.managers.languages.LanguageManager;
 import org.bukkit.Location;

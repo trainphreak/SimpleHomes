@@ -38,6 +38,7 @@ import java.util.logging.Level;
 public class LanguageFileManager {
 
     private final SimpleHomes instance;
+    private static final String LANGUAGE_FILE_NAME = "languages.yml";
     private FileConfiguration languageConfig = null;
     private File languageFile = null;
 
@@ -55,11 +56,11 @@ public class LanguageFileManager {
 
     void reloadLanguages() {
         if (languageFile == null) {
-            languageFile = new File(instance.getDataFolder(), "languages.yml");
+            languageFile = new File(instance.getDataFolder(), LANGUAGE_FILE_NAME);
         }
         languageConfig = YamlConfiguration.loadConfiguration(languageFile);
 
-        InputStream defLanguageConfig = instance.getResource("languages.yml");
+        InputStream defLanguageConfig = instance.getResource(LANGUAGE_FILE_NAME);
         if (defLanguageConfig != null) {
             YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defLanguageConfig);
             languageConfig.setDefaults(defConfig);
@@ -79,10 +80,10 @@ public class LanguageFileManager {
 
     public void saveDefaultLanguages() {
         if (languageFile == null) {
-            languageFile = new File(instance.getDataFolder(), "languages.yml");
+            languageFile = new File(instance.getDataFolder(), LANGUAGE_FILE_NAME);
         }
         if (!languageFile.exists()) {
-            instance.saveResource("languages.yml", false);
+            instance.saveResource(LANGUAGE_FILE_NAME, false);
         }
     }
 }
