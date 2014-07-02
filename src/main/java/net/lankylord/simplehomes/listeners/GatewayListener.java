@@ -48,7 +48,7 @@ public class GatewayListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        homeManager.loadPlayerHomes(event.getPlayer().getName().toLowerCase());
+        homeManager.loadPlayerHomes(event.getPlayer().getUniqueId());
         Player player = event.getPlayer();
         if (player.hasPermission("simplehomes.notify")) {
             if (isUpdateAvailable) {
@@ -59,6 +59,6 @@ public class GatewayListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        homeManager.unloadPlayerHomes(event.getPlayer().getName().toLowerCase());
+        homeManager.unloadPlayerHomes(event.getPlayer().getUniqueId());
     }
 }

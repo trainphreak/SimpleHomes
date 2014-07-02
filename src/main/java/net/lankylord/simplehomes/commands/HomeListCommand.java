@@ -51,7 +51,7 @@ public class HomeListCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            Set<String> homeSet = homeManager.getPlayerHomes(player.getName().toLowerCase()).keySet();
+            Set<String> homeSet = homeManager.getPlayerHomes(player.getUniqueId()).keySet();
             String[] homeString = homeSet.toArray(new String[homeSet.size()]);
             Arrays.sort(homeString);
             int size = homeSet.size();

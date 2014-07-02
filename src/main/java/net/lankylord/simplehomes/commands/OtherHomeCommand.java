@@ -30,11 +30,14 @@ package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.managers.HomeManager;
 import net.lankylord.simplehomes.managers.languages.LanguageManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 /** @author cedeel */
 public class OtherHomeCommand implements CommandExecutor {
@@ -54,9 +57,10 @@ public class OtherHomeCommand implements CommandExecutor {
                 homeName = strings[1].toLowerCase();
             }
             String targetName = strings[0].toLowerCase();
-            Location location = homeManager.getPlayerHome(targetName, homeName);
+            UUID targetUUID = Bukkit.getOfflinePlayer(targetName).getUniqueId();
+            Location location = homeManager.getPlayerHome(targetUUID, homeName);
             if (location == null) {
-                location = homeManager.getPlayerHomeFromFile(targetName, homeName);
+                location = homeManager.getPlayerHomeFromFile(targetUUID, homeName);
             }
             if (location != null) {
                 player.teleport(location);

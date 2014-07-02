@@ -35,11 +35,12 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class HomeManager {
 
     private final HomeFileManager fileManager;
-    private final Map<String, Map> loadedHomes;
+    private final Map<UUID, Map> loadedHomes;
 
     public HomeManager(HomeFileManager fileManager) {
         this.fileManager = fileManager;
@@ -49,31 +50,31 @@ public class HomeManager {
     /**
      * Check whether a player has reached their maximum amount of homes
      *
-     * @param playerName Name of the player
+     * @param uuid UUID of the player
      * @return Whether a player has reached the maximum amount of homes
      */
-    public boolean reachedMaxHomes(String playerName) {
-        return getHomesSize(playerName) == ConfigManager.getMaxHomes();
+    public boolean reachedMaxHomes(UUID uuid) {
+        return getHomesSize(uuid) == ConfigManager.getMaxHomes();
     }
 
     /**
      * Get the amount of homes of a player
      *
-     * @param playerName Name of the player
+     * @param uuid UUID of the player
      * @return Amount of homes
      */
-    public int getHomesSize(String playerName) {
-        if (fileManager.getHomes().contains(playerName.toLowerCase())) {
-            return fileManager.getHomes().getConfigurationSection(playerName.toLowerCase()).getKeys(false).size();
+    public int getHomesSize(UUID uuid) {
+        if (fileManager.getHomes().contains(uuid.toString())) {
+            return fileManager.getHomes().getConfigurationSection(uuid.toString()).getKeys(false).size();
         }
         return 0;
     }
 
-    private void saveHomeToFile(String playerName, Location location, String homeName) {
-        ConfigurationSection home = fileManager.getHomes().getConfigurationSection(playerName.toLowerCase() + "." +
+    private void saveHomeToFile(UUID uuid, Location location, String homeName) {
+        ConfigurationSection home = fileManager.getHomes().getConfigurationSection(uuid.toString() + "." +
                 homeName.toLowerCase());
         if (home == null) {
-            home = fileManager.getHomes().createSection(playerName.toLowerCase() + "." + homeName.toLowerCase());
+            home = fileManager.getHomes().createSection(uuid.toString() + "." + homeName.toLowerCase());
         }
 
         home.set("world", location.getWorld().getName());
@@ -91,26 +92,26 @@ public class HomeManager {
      * @param homeName Name of the home
      */
     public void saveHome(Player player, String homeName) {
-        String playerName = player.getName().toLowerCase();
+        UUID uuid = player.getUniqueId();
         Location location = player.getLocation();
 
-        Map<String, Location> homeLocation = loadedHomes.get(playerName);
+        Map<String, Location> homeLocation = loadedHomes.get(uuid);
         if (homeLocation == null) {
             homeLocation = new HashMap<>();
         }
         homeLocation.put(homeName.toLowerCase(), location);
-        loadedHomes.put(playerName, homeLocation);
+        loadedHomes.put(uuid, homeLocation);
 
-        saveHomeToFile(playerName, location, homeName);
+        saveHomeToFile(uuid, location, homeName);
     }
 
-    public void deleteHome(String playerName, String homeName) {
-        Map homeLocations = loadedHomes.get(playerName.toLowerCase());
+    public void deleteHome(UUID uuid, String homeName) {
+        Map homeLocations = loadedHomes.get(uuid);
         if (homeLocations != null) {
             homeLocations.remove(homeName.toLowerCase());
-            loadedHomes.put(playerName.toLowerCase(), homeLocations);
+            loadedHomes.put(uuid, homeLocations);
         }
-        ConfigurationSection home = fileManager.getHomes().getConfigurationSection(playerName.toLowerCase());
+        ConfigurationSection home = fileManager.getHomes().getConfigurationSection(uuid.toString());
         home.set(homeName.toLowerCase(), null);
         fileManager.saveHomes();
     }
@@ -118,10 +119,10 @@ public class HomeManager {
     /**
      * Load a player's homes from file
      *
-     * @param playerName Name of the player
+     * @param uuid UUID of the player
      */
-    public void loadPlayerHomes(String playerName) {
-        ConfigurationSection homes = fileManager.getHomes().getConfigurationSection(playerName.toLowerCase());
+    public void loadPlayerHomes(UUID uuid) {
+        ConfigurationSection homes = fileManager.getHomes().getConfigurationSection(uuid.toString());
         if (homes != null) {
             Map<String, Location> homeLocation = new HashMap<>();
 
@@ -139,27 +140,28 @@ public class HomeManager {
                     System.out.println("Error in home, not loaded.");
                 }
             }
-            loadedHomes.put(playerName.toLowerCase(), homeLocation);
+            loadedHomes.put(uuid, homeLocation);
         }
     }
 
     /**
      * Remove a player's homes from memory
      *
-     * @param playerName Name of the player
+     * @param uuid UUID of the player
      */
-    public void unloadPlayerHomes(String playerName) {
-        loadedHomes.remove(playerName.toLowerCase());
+    public void unloadPlayerHomes(UUID uuid) {
+        loadedHomes.remove(uuid);
     }
 
     /**
      * Get a player's home from memory
      *
-     * @param playerName Name of the player     * @param homeName   Name of the home
+     * @param uuid UUID of the player
+     * @param homeName   Name of the home
      * @return Location of home
      */
-    public Location getPlayerHome(String playerName, String homeName) {
-        Map<String, Location> homeLocations = loadedHomes.get(playerName.toLowerCase());
+    public Location getPlayerHome(UUID uuid, String homeName) {
+        Map<String, Location> homeLocations = loadedHomes.get(uuid);
         if (homeLocations != null) {
             return homeLocations.get(homeName.toLowerCase());
         } else {
@@ -167,8 +169,8 @@ public class HomeManager {
         }
     }
 
-    public Location getPlayerHomeFromFile(String playerName, String homeName) {
-        ConfigurationSection homes = fileManager.getHomes().getConfigurationSection(playerName.toLowerCase());
+    public Location getPlayerHomeFromFile(UUID uuid, String homeName) {
+        ConfigurationSection homes = fileManager.getHomes().getConfigurationSection(uuid.toString());
         Map<String, Location> homeLocation = new HashMap<>();
 
         for (String home : homes.getKeys(false)) {
@@ -183,7 +185,7 @@ public class HomeManager {
         return homeLocation.get(homeName.toLowerCase());
     }
 
-    public Map<String, Location> getPlayerHomes(String playerName) {
-        return loadedHomes.get(playerName.toLowerCase());
+    public Map<String, Location> getPlayerHomes(UUID uuid) {
+        return loadedHomes.get(uuid);
     }
 }

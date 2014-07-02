@@ -52,7 +52,7 @@ public class SetHomeCommand implements CommandExecutor {
             if (args.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
                 homeName = args[0].toLowerCase();
             }
-            if (homeManager.reachedMaxHomes(player.getName()) && !homeManager.getPlayerHomes(player.getName()).containsKey(homeName)) {
+            if (homeManager.reachedMaxHomes(player.getUniqueId()) && !homeManager.getPlayerHomes(player.getUniqueId()).containsKey(homeName)) {
                 player.sendMessage(LanguageManager.HOME_MAX_REACHED);
                 return true;
             }
