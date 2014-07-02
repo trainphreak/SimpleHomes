@@ -29,7 +29,9 @@
 package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.managers.HomeManager;
+import net.lankylord.simplehomes.managers.UUIDManager;
 import net.lankylord.simplehomes.managers.languages.LanguageManager;
+import net.lankylord.simplehomes.util.UUIDFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -57,7 +59,7 @@ public class OtherHomeCommand implements CommandExecutor {
                 homeName = strings[1].toLowerCase();
             }
             String targetName = strings[0].toLowerCase();
-            UUID targetUUID = Bukkit.getOfflinePlayer(targetName).getUniqueId();
+            UUID targetUUID = UUIDManager.getUUIDFromPlayer(targetName);
             Location location = homeManager.getPlayerHome(targetUUID, homeName);
             if (location == null) {
                 location = homeManager.getPlayerHomeFromFile(targetUUID, homeName);
