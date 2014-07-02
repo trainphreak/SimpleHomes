@@ -172,15 +172,16 @@ public class HomeManager {
     public Location getPlayerHomeFromFile(UUID uuid, String homeName) {
         ConfigurationSection homes = fileManager.getHomes().getConfigurationSection(uuid.toString());
         Map<String, Location> homeLocation = new HashMap<>();
+        if (homes != null) {
+            for (String home : homes.getKeys(false)) {
+                ConfigurationSection homeSection = homes.getConfigurationSection(home);
+                String world = homeSection.getString("world");
+                int x = homeSection.getInt("x");
+                int y = homeSection.getInt("y");
+                int z = homeSection.getInt("z");
 
-        for (String home : homes.getKeys(false)) {
-            ConfigurationSection homeSection = homes.getConfigurationSection(home);
-            String world = homeSection.getString("world");
-            int x = homeSection.getInt("x");
-            int y = homeSection.getInt("y");
-            int z = homeSection.getInt("z");
-
-            homeLocation.put(home.toLowerCase(), new Location(Bukkit.getWorld(world), x, y, z));
+                homeLocation.put(home.toLowerCase(), new Location(Bukkit.getWorld(world), x, y, z));
+            }
         }
         return homeLocation.get(homeName.toLowerCase());
     }
