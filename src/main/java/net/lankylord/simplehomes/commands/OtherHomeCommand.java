@@ -28,6 +28,7 @@
  */
 package net.lankylord.simplehomes.commands;
 
+import net.lankylord.simplehomes.SimpleHomes;
 import net.lankylord.simplehomes.managers.HomeManager;
 import net.lankylord.simplehomes.managers.UUIDManager;
 import net.lankylord.simplehomes.managers.languages.LanguageManager;
@@ -38,42 +39,59 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.UUID;
 
 /** @author cedeel */
 public class OtherHomeCommand implements CommandExecutor {
 
+    private final SimpleHomes simpleHomes;
     private final HomeManager homeManager;
 
-    public OtherHomeCommand(HomeManager manager) {
+    public OtherHomeCommand(SimpleHomes plugin, HomeManager manager) {
+        simpleHomes = plugin;
         homeManager = manager;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (sender instanceof Player) {
-            Player player = (Player) sender;
-            String homeName = "default";
+            final Player player = (Player) sender;
+            final String homeName;
             if (strings.length == 2) {
                 homeName = strings[1].toLowerCase();
-            }
-            String targetName = strings[0].toLowerCase();
-            UUID targetUUID = UUIDManager.getUUIDFromPlayer(targetName);
-            Location location = homeManager.getPlayerHome(targetUUID, homeName);
-            if (location == null) {
-                location = homeManager.getPlayerHomeFromFile(targetUUID, homeName);
-            }
-            if (location != null) {
-                player.teleport(location);
-                player.sendMessage(LanguageManager.TELEPORT_OTHERHOME.replaceAll("%p", targetName));
-                return true;
             } else {
-                player.sendMessage(LanguageManager.HOME_NOT_FOUND);
-                return true;
+                homeName = "default";
             }
+            final String targetName = strings[0].toLowerCase();
+            simpleHomes.getServer().getScheduler().runTaskAsynchronously(simpleHomes, new BukkitRunnable() {
+                UUID targetUUID;
+                @Override
+                public void run() {
+                    targetUUID = UUIDManager.getUUIDFromPlayer(targetName);
+                    simpleHomes.getServer().getScheduler().runTask(simpleHomes, new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            Location location = homeManager.getPlayerHome(targetUUID, homeName);
+                            if (location == null) {
+                                location = homeManager.getPlayerHomeFromFile(targetUUID, homeName);
+                            }
+                            if (location != null) {
+                                player.teleport(location);
+                                player.sendMessage(LanguageManager.TELEPORT_OTHERHOME.replaceAll("%p", targetName));
+                            } else {
+                                player.sendMessage(LanguageManager.HOME_NOT_FOUND);
+                            }
+                        }
+                    });
+
+                }
+            });
         }
         sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
         return false;
     }
 }
+
