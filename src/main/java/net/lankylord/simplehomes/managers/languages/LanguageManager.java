@@ -44,6 +44,7 @@ public class LanguageManager {
     public static String PLAYER_COMMAND_ONLY = ChatColor.RED + "Only players may issue that command.";
     public static String TELEPORT_OTHERHOME = ChatColor.YELLOW + "Teleported to %p's home.";
     public static String TELEPORT_SUCCESS = ChatColor.YELLOW + "Teleported.";
+    public static String PLAYER_NOT_EXIST = ChatColor.RED + "That player doesn't exist.";
 
     public LanguageManager(LanguageFileManager fileManager) {
         loadMessages(fileManager.getLanguageConfig());
@@ -63,5 +64,6 @@ public class LanguageManager {
         PLAYER_COMMAND_ONLY = convertColours(languageConfig.getString("player-command-only"));
         TELEPORT_OTHERHOME = convertColours(languageConfig.getString("teleport-otherhome"));
         TELEPORT_SUCCESS = convertColours(languageConfig.getString("teleport-success"));
+        PLAYER_NOT_EXIST = convertColours(languageConfig.getString("player-not-exist"));
     }
 }

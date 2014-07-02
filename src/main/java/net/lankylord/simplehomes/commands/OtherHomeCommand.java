@@ -58,6 +58,9 @@ public class OtherHomeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (sender instanceof Player) {
+            if (strings.length == 0) {
+                return false;
+            }
             final Player player = (Player) sender;
             final String homeName;
             if (strings.length == 2) {
@@ -71,27 +74,31 @@ public class OtherHomeCommand implements CommandExecutor {
                 @Override
                 public void run() {
                     targetUUID = UUIDManager.getUUIDFromPlayer(targetName);
-                    simpleHomes.getServer().getScheduler().runTask(simpleHomes, new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            Location location = homeManager.getPlayerHome(targetUUID, homeName);
-                            if (location == null) {
-                                location = homeManager.getPlayerHomeFromFile(targetUUID, homeName);
+                    if (targetUUID != null) {
+                        simpleHomes.getServer().getScheduler().runTask(simpleHomes, new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                Location location = homeManager.getPlayerHome(targetUUID, homeName);
+                                if (location == null) {
+                                    location = homeManager.getPlayerHomeFromFile(targetUUID, homeName);
+                                }
+                                if (location != null) {
+                                    player.teleport(location);
+                                    player.sendMessage(LanguageManager.TELEPORT_OTHERHOME.replaceAll("%p", targetName));
+                                } else {
+                                    player.sendMessage(LanguageManager.HOME_NOT_FOUND);
+                                }
                             }
-                            if (location != null) {
-                                player.teleport(location);
-                                player.sendMessage(LanguageManager.TELEPORT_OTHERHOME.replaceAll("%p", targetName));
-                            } else {
-                                player.sendMessage(LanguageManager.HOME_NOT_FOUND);
-                            }
-                        }
-                    });
-
+                        });
+                    } else {
+                        player.sendMessage(LanguageManager.PLAYER_NOT_EXIST);
+                    }
                 }
             });
+        } else {
+            sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
         }
-        sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
-        return false;
+        return true;
     }
 }
 
