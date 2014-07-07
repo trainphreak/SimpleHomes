@@ -26,19 +26,56 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.lankylord.simplehomes.managers;
+package net.lankylord.simplehomes.storage;
 
 import net.lankylord.simplehomes.SimpleHomes;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
-public class ConfigManager {
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
 
-    private static int maxHomes;
+/** @author LankyLord */
+public class HomeFileManager {
 
-    public ConfigManager(SimpleHomes simpleHomes) {
-        maxHomes = simpleHomes.getConfig().getInt("MaxHomes", 1);
+    private final SimpleHomes instance;
+    private FileConfiguration homes = null;
+    private File homesFile = null;
+
+    public HomeFileManager(SimpleHomes instance) {
+        this.instance = instance;
     }
 
-    public static int getMaxHomes() {
-        return maxHomes;
+    public FileConfiguration getHomes() {
+        if (homes == null) {
+            this.reloadHomes();
+        }
+        return homes;
+    }
+
+    void reloadHomes() {
+        if (homesFile == null) {
+            homesFile = new File(instance.getDataFolder(), "Homes.yml");
+        }
+        homes = YamlConfiguration.loadConfiguration(homesFile);
+
+        InputStream defHomes = instance.getResource("Homes.yml");
+        if (defHomes != null) {
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defHomes);
+            homes.setDefaults(defConfig);
+        }
+    }
+
+    public void saveHomes() {
+        if (homes == null || homesFile == null) {
+            return;
+        }
+        try {
+            getHomes().save(homesFile);
+        } catch (IOException ex) {
+            instance.getLogger().log(Level.SEVERE, "Could not save homes file to " + homesFile, ex);
+        }
     }
 }

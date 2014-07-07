@@ -26,39 +26,19 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.lankylord.simplehomes.listeners;
+package net.lankylord.simplehomes.configuration;
 
-import net.lankylord.simplehomes.homes.HomeManager;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import net.lankylord.simplehomes.SimpleHomes;
 
-public class GatewayListener implements Listener {
+public class ConfigManager {
 
-    private final boolean isUpdateAvailable;
-    private final HomeManager homeManager;
+    private static int maxHomes;
 
-    public GatewayListener(HomeManager manager, boolean update) {
-        this.homeManager = manager;
-        isUpdateAvailable = update;
+    public ConfigManager(SimpleHomes simpleHomes) {
+        maxHomes = simpleHomes.getConfig().getInt("MaxHomes", 1);
     }
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        homeManager.loadPlayerHomes(event.getPlayer().getUniqueId());
-        Player player = event.getPlayer();
-        if (player.hasPermission("simplehomes.notify")) {
-            if (isUpdateAvailable) {
-                player.sendMessage(ChatColor.YELLOW + "[SimpleHomes] There is an update available on BukkitDev!");
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        homeManager.unloadPlayerHomes(event.getPlayer().getUniqueId());
+    public static int getMaxHomes() {
+        return maxHomes;
     }
 }

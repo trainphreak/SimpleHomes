@@ -26,7 +26,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.lankylord.simplehomes.managers.languages;
+package net.lankylord.simplehomes.configuration.languages;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;

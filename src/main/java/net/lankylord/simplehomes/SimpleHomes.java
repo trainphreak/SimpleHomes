@@ -32,11 +32,11 @@ package net.lankylord.simplehomes;
 import net.gravitydevelopment.updater.Updater;
 import net.lankylord.simplehomes.commands.*;
 import net.lankylord.simplehomes.listeners.GatewayListener;
-import net.lankylord.simplehomes.managers.ConfigManager;
-import net.lankylord.simplehomes.managers.HomeFileManager;
-import net.lankylord.simplehomes.managers.HomeManager;
-import net.lankylord.simplehomes.managers.languages.LanguageFileManager;
-import net.lankylord.simplehomes.managers.languages.LanguageManager;
+import net.lankylord.simplehomes.configuration.ConfigManager;
+import net.lankylord.simplehomes.storage.HomeFileManager;
+import net.lankylord.simplehomes.homes.HomeManager;
+import net.lankylord.simplehomes.configuration.languages.LanguageFileManager;
+import net.lankylord.simplehomes.configuration.languages.LanguageManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;

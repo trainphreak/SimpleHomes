@@ -26,8 +26,10 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.lankylord.simplehomes.managers;
+package net.lankylord.simplehomes.homes;
 
+import net.lankylord.simplehomes.configuration.ConfigManager;
+import net.lankylord.simplehomes.storage.HomeFileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;

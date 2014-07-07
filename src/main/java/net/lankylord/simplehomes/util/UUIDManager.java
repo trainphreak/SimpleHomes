@@ -1,4 +1,4 @@
-package net.lankylord.simplehomes.managers;
+package net.lankylord.simplehomes.util;
 
 import net.lankylord.simplehomes.util.NameFetcher;
 import net.lankylord.simplehomes.util.UUIDFetcher;

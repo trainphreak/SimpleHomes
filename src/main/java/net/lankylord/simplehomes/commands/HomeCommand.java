@@ -28,8 +28,8 @@
  */
 package net.lankylord.simplehomes.commands;
 
-import net.lankylord.simplehomes.managers.HomeManager;
-import net.lankylord.simplehomes.managers.languages.LanguageManager;
+import net.lankylord.simplehomes.homes.HomeManager;
+import net.lankylord.simplehomes.configuration.languages.LanguageManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

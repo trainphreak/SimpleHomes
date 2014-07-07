@@ -26,7 +26,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.lankylord.simplehomes.managers;
+package net.lankylord.simplehomes.configuration.languages;
 
 import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -38,44 +38,55 @@ import java.io.InputStream;
 import java.util.logging.Level;
 
 /** @author LankyLord */
-public class HomeFileManager {
+public class LanguageFileManager {
 
     private final SimpleHomes instance;
-    private FileConfiguration homes = null;
-    private File homesFile = null;
+    private static final String LANGUAGE_FILE_NAME = "languages.yml";
+    private FileConfiguration languageConfig = null;
+    private File languageFile = null;
 
-    public HomeFileManager(SimpleHomes instance) {
+    public LanguageFileManager(SimpleHomes instance) {
         this.instance = instance;
+        saveDefaultLanguages();
     }
 
-    public FileConfiguration getHomes() {
-        if (homes == null) {
-            this.reloadHomes();
+    public FileConfiguration getLanguageConfig() {
+        if (languageConfig == null) {
+            this.reloadLanguages();
         }
-        return homes;
+        return languageConfig;
     }
 
-    void reloadHomes() {
-        if (homesFile == null) {
-            homesFile = new File(instance.getDataFolder(), "Homes.yml");
+    void reloadLanguages() {
+        if (languageFile == null) {
+            languageFile = new File(instance.getDataFolder(), LANGUAGE_FILE_NAME);
         }
-        homes = YamlConfiguration.loadConfiguration(homesFile);
+        languageConfig = YamlConfiguration.loadConfiguration(languageFile);
 
-        InputStream defHomes = instance.getResource("Homes.yml");
-        if (defHomes != null) {
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defHomes);
-            homes.setDefaults(defConfig);
+        InputStream defLanguageConfig = instance.getResource(LANGUAGE_FILE_NAME);
+        if (defLanguageConfig != null) {
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defLanguageConfig);
+            languageConfig.setDefaults(defConfig);
         }
     }
 
-    public void saveHomes() {
-        if (homes == null || homesFile == null) {
+    public void saveLanguages() {
+        if (languageConfig == null || languageFile == null) {
             return;
         }
         try {
-            getHomes().save(homesFile);
+            getLanguageConfig().save(languageFile);
         } catch (IOException ex) {
-            instance.getLogger().log(Level.SEVERE, "Could not save homes file to " + homesFile, ex);
+            instance.getLogger().log(Level.SEVERE, "Could not save languages file to " + languageFile, ex);
+        }
+    }
+
+    public void saveDefaultLanguages() {
+        if (languageFile == null) {
+            languageFile = new File(instance.getDataFolder(), LANGUAGE_FILE_NAME);
+        }
+        if (!languageFile.exists()) {
+            instance.saveResource(LANGUAGE_FILE_NAME, false);
         }
     }
 }

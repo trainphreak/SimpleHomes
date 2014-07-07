@@ -29,18 +29,15 @@
 package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.SimpleHomes;
-import net.lankylord.simplehomes.managers.HomeManager;
-import net.lankylord.simplehomes.managers.UUIDManager;
-import net.lankylord.simplehomes.managers.languages.LanguageManager;
-import net.lankylord.simplehomes.util.UUIDFetcher;
-import org.bukkit.Bukkit;
+import net.lankylord.simplehomes.homes.HomeManager;
+import net.lankylord.simplehomes.util.UUIDManager;
+import net.lankylord.simplehomes.configuration.languages.LanguageManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.UUID;
 
