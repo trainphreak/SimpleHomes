@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 
-/** @author LankyLord */
 public class HomeFileManager {
 
     private final SimpleHomes instance;

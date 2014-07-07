@@ -158,8 +158,8 @@ public class HomeManager {
     /**
      * Get a player's home from memory
      *
-     * @param uuid UUID of the player
-     * @param homeName   Name of the home
+     * @param uuid     UUID of the player
+     * @param homeName Name of the home
      * @return Location of home
      */
     public Location getPlayerHome(UUID uuid, String homeName) {

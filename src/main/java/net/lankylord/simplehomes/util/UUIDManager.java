@@ -1,7 +1,5 @@
 package net.lankylord.simplehomes.util;
 
-import net.lankylord.simplehomes.util.NameFetcher;
-import net.lankylord.simplehomes.util.UUIDFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -21,19 +19,16 @@ import java.util.Map.Entry;
  */
 public class UUIDManager {
 
+    // This is the time that one cached value is valid (in hours).
+    private static final int maxLifeTime = 12;
     private static Map<String, UUID> foundUUIDs = new HashMap<String, UUID>();
     private static Map<UUID, String> foundPlayers = new HashMap<UUID, String>();
-
     // This hashmap stores the cached values of uuids for players.
     private static HashMap<String, UUID> cachedUUIDs = new HashMap<String, UUID>();
-
     // This hashmap stores the latest cache time for a certain player.
     // This is used to see if the cached UUID was older than 12 hours. If it is older than 12 hours,
     // it will be renewed.
     private static HashMap<String, Long> lastCached = new HashMap<String, Long>();
-
-    // This is the time that one cached value is valid (in hours).
-    private static final int maxLifeTime = 12;
 
     /**
      * Get the UUIDs of a list of players. <br>

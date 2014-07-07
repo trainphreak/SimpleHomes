@@ -31,7 +31,6 @@ package net.lankylord.simplehomes.configuration.languages;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
-/** @author LankyLord */
 public class LanguageManager {
 
     public static String HOME_DELETED = ChatColor.YELLOW + "Home deleted.";

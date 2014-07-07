@@ -28,8 +28,8 @@
  */
 package net.lankylord.simplehomes.commands;
 
-import net.lankylord.simplehomes.homes.HomeManager;
 import net.lankylord.simplehomes.configuration.languages.LanguageManager;
+import net.lankylord.simplehomes.homes.HomeManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -38,7 +38,6 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.Set;
 
-/** @author cedeel */
 public class HomeListCommand implements CommandExecutor {
 
     private final HomeManager homeManager;

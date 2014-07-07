@@ -37,11 +37,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 
-/** @author LankyLord */
 public class LanguageFileManager {
 
-    private final SimpleHomes instance;
     private static final String LANGUAGE_FILE_NAME = "languages.yml";
+    private final SimpleHomes instance;
     private FileConfiguration languageConfig = null;
     private File languageFile = null;
 

@@ -29,9 +29,9 @@
 package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.SimpleHomes;
+import net.lankylord.simplehomes.configuration.languages.LanguageManager;
 import net.lankylord.simplehomes.homes.HomeManager;
 import net.lankylord.simplehomes.util.UUIDManager;
-import net.lankylord.simplehomes.configuration.languages.LanguageManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -41,7 +41,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
-/** @author cedeel */
 public class OtherHomeCommand implements CommandExecutor {
 
     private final SimpleHomes simpleHomes;
@@ -68,6 +67,7 @@ public class OtherHomeCommand implements CommandExecutor {
             final String targetName = strings[0].toLowerCase();
             simpleHomes.getServer().getScheduler().runTaskAsynchronously(simpleHomes, new BukkitRunnable() {
                 UUID targetUUID;
+
                 @Override
                 public void run() {
                     targetUUID = UUIDManager.getUUIDFromPlayer(targetName);
