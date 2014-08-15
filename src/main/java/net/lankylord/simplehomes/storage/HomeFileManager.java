@@ -32,14 +32,13 @@ import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.logging.Level;
 
 public class HomeFileManager {
 
     private final SimpleHomes instance;
+    private final static String fileName = "Homes.yml";
     private FileConfiguration homes = null;
     private File homesFile = null;
 
@@ -56,13 +55,14 @@ public class HomeFileManager {
 
     void reloadHomes() {
         if (homesFile == null) {
-            homesFile = new File(instance.getDataFolder(), "Homes.yml");
+            homesFile = new File(instance.getDataFolder(), fileName);
         }
         homes = YamlConfiguration.loadConfiguration(homesFile);
 
-        InputStream defHomes = instance.getResource("Homes.yml");
+        InputStream defHomes = instance.getResource(fileName);
         if (defHomes != null) {
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defHomes);
+            // What don't we do when the Bukkit staff randomly deprecates methods?
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new BufferedReader(new InputStreamReader(defHomes)));
             homes.setDefaults(defConfig);
         }
     }
