@@ -93,6 +93,7 @@ public class HomeManager {
      * @param player   The player
      * @param homeName Name of the home
      */
+    @SuppressWarnings("unchecked")
     public void saveHome(Player player, String homeName) {
         UUID uuid = player.getUniqueId();
         Location location = player.getLocation();
@@ -162,6 +163,7 @@ public class HomeManager {
      * @param homeName Name of the home
      * @return Location of home
      */
+    @SuppressWarnings("unchecked")
     public Location getPlayerHome(UUID uuid, String homeName) {
         Map<String, Location> homeLocations = loadedHomes.get(uuid);
         if (homeLocations != null) {
@@ -188,6 +190,7 @@ public class HomeManager {
         return homeLocation.get(homeName.toLowerCase());
     }
 
+    @SuppressWarnings("unchecked")
     public Map<String, Location> getPlayerHomes(UUID uuid) {
         return loadedHomes.get(uuid);
     }
