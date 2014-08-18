@@ -32,6 +32,8 @@ import net.lankylord.simplehomes.SimpleHomes;
 
 public class ConfigManager {
 
+    public static final int CONFIG_VERSION_UUID_INTRODUCED = 2;
+    public static final int CONFIG_VERSION = 2;
     private static int maxHomes;
 
     public ConfigManager(SimpleHomes simpleHomes) {

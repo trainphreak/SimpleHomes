@@ -37,6 +37,7 @@ import net.lankylord.simplehomes.configuration.languages.LanguageManager;
 import net.lankylord.simplehomes.homes.HomeManager;
 import net.lankylord.simplehomes.listeners.GatewayListener;
 import net.lankylord.simplehomes.storage.HomeFileManager;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
@@ -50,14 +51,21 @@ public class SimpleHomes extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.getConfig().options().copyDefaults(true);
-        saveDefaultConfig();
-        saveConfig();
+        FileConfiguration config = this.getConfig();
+
         this.homeFileManager = new HomeFileManager(this);
         this.homeManager = new HomeManager(homeFileManager);
+        if (getConfig().getInt("ConfigVersion") < ConfigManager.CONFIG_VERSION_UUID_INTRODUCED || !getConfig().isSet("ConfigVersion")) {
+            homeFileManager.UuidUpdate();
+        }
+        //this.saveDefaultConfig();
+        config.options().copyDefaults(true);
+        this.saveConfig();
         LanguageFileManager languageFileManager = new LanguageFileManager(this);
         languageFileManager.saveLanguages();
         new LanguageManager(languageFileManager);
+
+
         new ConfigManager(this);
         homeFileManager.saveHomes();
         loadCommands();

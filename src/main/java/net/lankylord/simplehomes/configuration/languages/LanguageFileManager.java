@@ -32,9 +32,7 @@ import net.lankylord.simplehomes.SimpleHomes;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.logging.Level;
 
 public class LanguageFileManager {
@@ -64,7 +62,8 @@ public class LanguageFileManager {
 
         InputStream defLanguageConfig = instance.getResource(LANGUAGE_FILE_NAME);
         if (defLanguageConfig != null) {
-            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defLanguageConfig);
+            // Yes, this is silly
+            YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new BufferedReader(new InputStreamReader(defLanguageConfig)));
             languageConfig.setDefaults(defConfig);
         }
     }
