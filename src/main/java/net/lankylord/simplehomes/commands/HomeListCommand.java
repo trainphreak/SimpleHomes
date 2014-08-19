@@ -50,27 +50,33 @@ public class HomeListCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            Set<String> homeSet = homeManager.getPlayerHomes(player.getUniqueId()).keySet();
-            String[] homeString = homeSet.toArray(new String[homeSet.size()]);
-            Arrays.sort(homeString);
-            int size = homeSet.size();
-            if (size != 0) {
-                StringBuilder builder = new StringBuilder();
-                if (size > 1) {
-                    for (int i = 0; i < size - 1; i++) {
-                        builder.append(homeString[i]).append(", ");
+            try {
+                // Returns a null if the user has no homes
+                Set<String> homeSet = homeManager.getPlayerHomes(player.getUniqueId()).keySet();
+                String[] homeString = homeSet.toArray(new String[homeSet.size()]);
+                Arrays.sort(homeString);
+                int size = homeSet.size();
+                if (size > 0) {
+                    StringBuilder builder = new StringBuilder();
+                    if (size > 1) {
+                        for (int i = 0; i < size - 1; i++) {
+                            builder.append(homeString[i]).append(", ");
+                        }
                     }
+                    builder.append(homeString[size - 1]);
+                    String homes = builder.toString();
+                    player.sendMessage(LanguageManager.HOME_LIST_PREFIX + " " + homes);
+                    return true;
                 }
-                builder.append(homeString[size - 1]);
-                String homes = builder.toString();
-                player.sendMessage(LanguageManager.HOME_LIST_PREFIX + " " + homes);
-                return true;
-            } else {
+            } catch (NullPointerException e) {
                 player.sendMessage(LanguageManager.NO_HOMES_FOUND);
                 return true;
             }
         }
-        sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
-        return false;
+        else {
+            //sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
+            homeManager.
+            return true;
+        }
     }
 }
