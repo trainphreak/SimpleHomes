@@ -30,13 +30,15 @@ package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.configuration.languages.LanguageManager;
 import net.lankylord.simplehomes.homes.HomeManager;
+import net.lankylord.simplehomes.util.NameFetcher;
+import net.lankylord.simplehomes.util.UUIDManager;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.Set;
+import java.util.*;
 
 public class HomeListCommand implements CommandExecutor {
 
@@ -55,28 +57,49 @@ public class HomeListCommand implements CommandExecutor {
                 Set<String> homeSet = homeManager.getPlayerHomes(player.getUniqueId()).keySet();
                 String[] homeString = homeSet.toArray(new String[homeSet.size()]);
                 Arrays.sort(homeString);
-                int size = homeSet.size();
-                if (size > 0) {
-                    StringBuilder builder = new StringBuilder();
-                    if (size > 1) {
-                        for (int i = 0; i < size - 1; i++) {
-                            builder.append(homeString[i]).append(", ");
-                        }
-                    }
-                    builder.append(homeString[size - 1]);
-                    String homes = builder.toString();
-                    player.sendMessage(LanguageManager.HOME_LIST_PREFIX + " " + homes);
-                    return true;
-                }
+
+                String homes = homeListString(homeString);
+                sender.sendMessage(LanguageManager.HOME_LIST_PREFIX + " " + homes);
+
             } catch (NullPointerException e) {
-                player.sendMessage(LanguageManager.NO_HOMES_FOUND);
-                return true;
+                sender.sendMessage(LanguageManager.NO_HOMES_FOUND);
             }
+            return true;
         }
         else {
             //sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
-            homeManager.
+            Map<UUID, Map<String, Location>> homes = homeManager.getHomes();
+            for(Map.Entry<UUID, Map<String, Location>> entry : homes.entrySet()) {
+                String playerName = UUIDManager.getPlayerFromUUID(entry.getKey());
+                try {
+                    Set<String> playerHomes = entry.getValue().keySet();
+                    String[] homeStrings = playerHomes.toArray(new String[playerHomes.size()]);
+                    Arrays.sort(homeStrings);
+                    String homeList = homeListString(homeStrings);
+                    sender.sendMessage("[" + playerName + "]" + LanguageManager.HOME_LIST_PREFIX + " " + homeList);
+                } catch (NullPointerException e) {
+                    sender.sendMessage("[" + playerName + "]" + " " + LanguageManager.NO_HOMES_FOUND);
+                }
+
+
+            }
             return true;
         }
+    }
+
+    private String homeListString(String[] playerHomes) {
+        int size = playerHomes.length;
+        if (size > 0) {
+            StringBuilder sb = new StringBuilder();
+            if (size > 1) {
+                for (int i = 0; i < size; i++) {
+                    sb.append(playerHomes[i]).append(", ");
+                }
+            }
+            sb.append(playerHomes[size - 1]);
+
+            return sb.toString();
+        }
+        return null;
     }
 }

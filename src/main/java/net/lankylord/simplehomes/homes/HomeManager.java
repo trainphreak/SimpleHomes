@@ -42,7 +42,7 @@ import java.util.UUID;
 public class HomeManager {
 
     private final HomeFileManager fileManager;
-    private final Map<UUID, Map> loadedHomes;
+    private final Map<UUID, Map<String, Location>> loadedHomes;
 
     public HomeManager(HomeFileManager fileManager) {
         this.fileManager = fileManager;
@@ -65,7 +65,7 @@ public class HomeManager {
      * @param uuid UUID of the player
      * @return Amount of homes
      */
-    public int getHomesSize(UUID uuid) {
+    private int getHomesSize(UUID uuid) {
         if (fileManager.getHomes().contains(uuid.toString())) {
             return fileManager.getHomes().getConfigurationSection(uuid.toString()).getKeys(false).size();
         }
@@ -108,6 +108,7 @@ public class HomeManager {
         saveHomeToFile(uuid, location, homeName);
     }
 
+    @SuppressWarnings("unchecked")
     public void deleteHome(UUID uuid, String homeName) {
         Map homeLocations = loadedHomes.get(uuid);
         if (homeLocations != null) {
@@ -193,5 +194,9 @@ public class HomeManager {
     @SuppressWarnings("unchecked")
     public Map<String, Location> getPlayerHomes(UUID uuid) {
         return loadedHomes.get(uuid);
+    }
+
+    public Map<UUID, Map<String, Location>> getHomes() {
+        return loadedHomes;
     }
 }
