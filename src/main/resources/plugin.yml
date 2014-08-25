@@ -24,6 +24,9 @@ commands:
   delhome:
     description: Delete a home
     permission: simplehomes.homes
+  shreload:
+    description: Reload SimpleHomes configuration from disk
+    permission: simplehomes.reload
 
 permissions:
   simplehomes.homes:
@@ -33,4 +36,6 @@ permissions:
   simplehomes.multihomes:
     default: op
   simplehomes.notify:
+    default: op
+  simplehomes.reload:
     default: op
