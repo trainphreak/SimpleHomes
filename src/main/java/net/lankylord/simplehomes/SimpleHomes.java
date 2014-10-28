@@ -30,7 +30,12 @@
 package net.lankylord.simplehomes;
 
 import net.gravitydevelopment.updater.Updater;
-import net.lankylord.simplehomes.commands.*;
+import net.lankylord.simplehomes.commands.DeleteHomeCommand;
+import net.lankylord.simplehomes.commands.HomeCommand;
+import net.lankylord.simplehomes.commands.HomeListCommand;
+import net.lankylord.simplehomes.commands.OtherHomeCommand;
+import net.lankylord.simplehomes.commands.ReloadCommand;
+import net.lankylord.simplehomes.commands.SetHomeCommand;
 import net.lankylord.simplehomes.configuration.ConfigManager;
 import net.lankylord.simplehomes.configuration.languages.LanguageFileManager;
 import net.lankylord.simplehomes.configuration.languages.LanguageManager;
@@ -64,7 +69,6 @@ public class SimpleHomes extends JavaPlugin {
         LanguageFileManager languageFileManager = new LanguageFileManager(this);
         languageFileManager.saveLanguages();
         new LanguageManager(languageFileManager);
-
 
         new ConfigManager(this);
         homeFileManager.saveHomes();

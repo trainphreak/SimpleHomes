@@ -35,14 +35,21 @@ import net.lankylord.simplehomes.util.UUIDFetcher;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
 public class HomeFileManager {
 
-    private final SimpleHomes instance;
     private final static String fileName = "Homes.yml";
+    private final SimpleHomes instance;
     private YamlConfiguration homes;
     private File homesFile;
 
@@ -95,8 +102,9 @@ public class HomeFileManager {
             users = new UUIDFetcher(new ArrayList<>(oldConfig.getKeys(false))).call();
 
             lusers = new HashMap<>(users.size());
-            for (Map.Entry<String, UUID> e : users.entrySet())
+            for (Map.Entry<String, UUID> e : users.entrySet()) {
                 lusers.put(e.getKey().toLowerCase(), e.getValue());
+            }
         } catch (Exception e) {
             return;
         }
@@ -121,8 +129,9 @@ public class HomeFileManager {
         }
 
         try {
-            if (homesFile == null)
+            if (homesFile == null) {
                 homesFile = new File(instance.getDataFolder(), fileName);
+            }
             Files.copy(homesFile, oldFile);
             result.save(homesFile);
             reloadHomes();

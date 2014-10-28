@@ -4,8 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 /**
  * This class allows developers to easily get UUIDs from names <br>
@@ -268,16 +272,19 @@ public class UUIDManager {
      * @return the name of player or null if not found.
      */
     public static String getPlayerFromUUID(UUID uuid) {
-        if (uuid == null)
+        if (uuid == null) {
             return null;
+        }
 
         Map<UUID, String> players = getPlayers(Arrays.asList(uuid));
 
-        if (players == null)
+        if (players == null) {
             return null;
+        }
 
-        if (players.isEmpty())
+        if (players.isEmpty()) {
             return null;
+        }
 
         return players.get(uuid);
     }
@@ -317,8 +324,9 @@ public class UUIDManager {
     private static boolean shouldUpdateValue(String playerName) {
 
         // Incorrectly cached, so cache now.
-        if (!isLastCached(playerName) || !isCachedUUID(playerName))
+        if (!isLastCached(playerName) || !isCachedUUID(playerName)) {
             return true;
+        }
 
         long lastCacheTime = getLastCached(playerName);
 
@@ -341,8 +349,9 @@ public class UUIDManager {
 
     private static UUID getCachedUUID(String playerName) {
         // Already found
-        if (cachedUUIDs.containsKey(playerName))
+        if (cachedUUIDs.containsKey(playerName)) {
             return cachedUUIDs.get(playerName);
+        }
 
         // Search for lowercase matches
         for (String loggedName : cachedUUIDs.keySet()) {
@@ -352,8 +361,9 @@ public class UUIDManager {
             }
         }
 
-        if (!cachedUUIDs.containsKey(playerName))
+        if (!cachedUUIDs.containsKey(playerName)) {
             return null;
+        }
 
         // Grab UUID
         return cachedUUIDs.get(playerName);
@@ -361,8 +371,9 @@ public class UUIDManager {
 
     private static long getLastCached(String playerName) {
         // Already found
-        if (lastCached.containsKey(playerName))
+        if (lastCached.containsKey(playerName)) {
             return lastCached.get(playerName);
+        }
 
         // Search for lowercase matches
         for (String loggedName : lastCached.keySet()) {
@@ -372,8 +383,9 @@ public class UUIDManager {
             }
         }
 
-        if (!lastCached.containsKey(playerName))
+        if (!lastCached.containsKey(playerName)) {
             return -1;
+        }
 
         // Grab last changed
         return lastCached.get(playerName);
@@ -396,8 +408,9 @@ public class UUIDManager {
      */
     public static void addCachedPlayer(Player player) {
         // Do not update if we still have one that is valid
-        if (!shouldUpdateValue(player.getName()))
+        if (!shouldUpdateValue(player.getName())) {
             return;
+        }
 
         addCachedPlayer(player.getName(), player.getUniqueId());
     }
@@ -411,8 +424,9 @@ public class UUIDManager {
      */
     public static void removeCachedPlayer(Player player) {
         // There is no cached value for this player
-        if (!isCachedUUID(player.getName()))
+        if (!isCachedUUID(player.getName())) {
             return;
+        }
 
         removeCachedPlayer(player.getName());
     }

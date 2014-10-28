@@ -30,7 +30,6 @@ package net.lankylord.simplehomes.commands;
 
 import net.lankylord.simplehomes.configuration.languages.LanguageManager;
 import net.lankylord.simplehomes.homes.HomeManager;
-import net.lankylord.simplehomes.util.NameFetcher;
 import net.lankylord.simplehomes.util.UUIDManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -38,7 +37,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class HomeListCommand implements CommandExecutor {
 
@@ -65,11 +67,10 @@ public class HomeListCommand implements CommandExecutor {
                 sender.sendMessage(LanguageManager.NO_HOMES_FOUND);
             }
             return true;
-        }
-        else {
+        } else {
             //sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
             Map<UUID, Map<String, Location>> homes = homeManager.getHomes();
-            for(Map.Entry<UUID, Map<String, Location>> entry : homes.entrySet()) {
+            for (Map.Entry<UUID, Map<String, Location>> entry : homes.entrySet()) {
                 String playerName = UUIDManager.getPlayerFromUUID(entry.getKey());
                 try {
                     Set<String> playerHomes = entry.getValue().keySet();

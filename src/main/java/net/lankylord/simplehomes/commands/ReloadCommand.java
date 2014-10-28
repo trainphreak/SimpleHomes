@@ -35,6 +35,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class ReloadCommand implements CommandExecutor {
+
     private SimpleHomes simpleHomes;
 
     public ReloadCommand(SimpleHomes simpleHomes) {

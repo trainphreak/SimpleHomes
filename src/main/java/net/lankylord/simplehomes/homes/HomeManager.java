@@ -74,7 +74,7 @@ public class HomeManager {
 
     private void saveHomeToFile(UUID uuid, Location location, String homeName) {
         ConfigurationSection home = fileManager.getHomes().getConfigurationSection(uuid.toString() + "." +
-                homeName.toLowerCase());
+                                                                                   homeName.toLowerCase());
         if (home == null) {
             home = fileManager.getHomes().createSection(uuid.toString() + "." + homeName.toLowerCase());
         }

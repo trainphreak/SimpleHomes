@@ -37,7 +37,7 @@ public class LanguageManager {
     public static String HOME_LIST_PREFIX = ChatColor.YELLOW + "Homes:";
     public static String HOME_NOT_FOUND = ChatColor.RED + "Home not found.";
     public static String HOME_MAX_REACHED = ChatColor.RED + "Home cannot be set. The maximum number of homes has been " +
-            "reached";
+                                            "reached";
     public static String HOME_SET = ChatColor.YELLOW + "Home set.";
     public static String NO_HOMES_FOUND = ChatColor.RED + "No homes found.";
     public static String PLAYER_COMMAND_ONLY = ChatColor.RED + "Only players may issue that command.";
