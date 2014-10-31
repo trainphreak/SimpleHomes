@@ -45,6 +45,7 @@ import net.lankylord.simplehomes.storage.HomeFileManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.util.logging.Level;
 
 public class SimpleHomes extends JavaPlugin {
@@ -60,8 +61,10 @@ public class SimpleHomes extends JavaPlugin {
 
         this.homeFileManager = new HomeFileManager(this);
         this.homeManager = new HomeManager(homeFileManager);
-        if (getConfig().getInt("ConfigVersion") < ConfigManager.CONFIG_VERSION_UUID_INTRODUCED || !getConfig().isSet("ConfigVersion")) {
-            homeFileManager.UuidUpdate();
+        if (new File(this.getDataFolder(), "config.yml").exists()) {
+            if (getConfig().getInt("ConfigVersion") < ConfigManager.CONFIG_VERSION_UUID_INTRODUCED || !getConfig().isSet("ConfigVersion")) {
+                homeFileManager.UuidUpdate();
+            }
         }
         //this.saveDefaultConfig();
         config.options().copyDefaults(true);
