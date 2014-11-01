@@ -52,7 +52,7 @@ public class HomeCommand implements CommandExecutor {
             if (strings.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
                 homeName = strings[0].toLowerCase();
             }
-            Location home = homeManager.getPlayerHome(player.getUniqueId(), homeName);
+            Location home = homeManager.getHome(player.getUniqueId(), homeName);
             if (home != null) {
                 player.teleport(home);
                 player.sendMessage(LanguageManager.TELEPORT_SUCCESS);

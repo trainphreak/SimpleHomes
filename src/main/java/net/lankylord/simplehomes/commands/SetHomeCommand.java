@@ -55,7 +55,8 @@ public class SetHomeCommand implements CommandExecutor {
                 player.sendMessage(LanguageManager.HOME_MAX_REACHED);
                 return true;
             }
-            homeManager.saveHome(player, homeName);
+            homeManager.addHomeToCache(player.getUniqueId(), homeName, player.getLocation());
+            homeManager.saveHome(player.getUniqueId(), homeName, player.getLocation());
             player.sendMessage(LanguageManager.HOME_SET);
             return true;
         } else {

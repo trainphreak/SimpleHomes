@@ -69,7 +69,7 @@ public class HomeListCommand implements CommandExecutor {
             return true;
         } else {
             //sender.sendMessage(LanguageManager.PLAYER_COMMAND_ONLY);
-            Map<UUID, Map<String, Location>> homes = homeManager.getHomes();
+            Map<UUID, Map<String, Location>> homes = homeManager.getHomeCache();
             for (Map.Entry<UUID, Map<String, Location>> entry : homes.entrySet()) {
                 String playerName = UUIDManager.getPlayerFromUUID(entry.getKey());
                 try {
@@ -81,8 +81,6 @@ public class HomeListCommand implements CommandExecutor {
                 } catch (NullPointerException e) {
                     sender.sendMessage("[" + playerName + "]" + " " + LanguageManager.NO_HOMES_FOUND);
                 }
-
-
             }
             return true;
         }

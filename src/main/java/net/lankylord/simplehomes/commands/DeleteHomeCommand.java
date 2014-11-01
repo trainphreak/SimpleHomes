@@ -51,6 +51,7 @@ public class DeleteHomeCommand implements CommandExecutor {
             if (strings.length == 1 && sender.hasPermission("simplehomes.multihomes")) {
                 homeName = strings[0].toLowerCase();
             }
+            homeManager.removeHomeFromCache(player.getUniqueId(), homeName);
             homeManager.deleteHome(player.getUniqueId(), homeName);
             player.sendMessage(LanguageManager.HOME_DELETED);
             return true;

@@ -75,10 +75,7 @@ public class OtherHomeCommand implements CommandExecutor {
                         simpleHomes.getServer().getScheduler().runTask(simpleHomes, new BukkitRunnable() {
                             @Override
                             public void run() {
-                                Location location = homeManager.getPlayerHome(targetUUID, homeName);
-                                if (location == null) {
-                                    location = homeManager.getPlayerHomeFromFile(targetUUID, homeName);
-                                }
+                                Location location = homeManager.getHome(targetUUID, homeName);
                                 if (location != null) {
                                     player.teleport(location);
                                     player.sendMessage(LanguageManager.TELEPORT_OTHERHOME.replaceAll("%p", targetName));
