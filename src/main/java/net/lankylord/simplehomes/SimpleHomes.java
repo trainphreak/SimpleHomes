@@ -29,7 +29,7 @@
 
 package net.lankylord.simplehomes;
 
-import net.gravitydevelopment.updater.Updater;
+//import net.gravitydevelopment.updater.Updater;
 import net.lankylord.simplehomes.commands.DeleteHomeCommand;
 import net.lankylord.simplehomes.commands.HomeCommand;
 import net.lankylord.simplehomes.commands.HomeListCommand;
@@ -77,9 +77,9 @@ public class SimpleHomes extends JavaPlugin {
         homeFileManager.saveHomes();
         loadCommands();
         loadListeners();
-        if (getConfig().getBoolean("AutoUpdater.Enabled", true)) {
+        /*if (getConfig().getBoolean("AutoUpdater.Enabled", true)) {
             loadUpdater();
-        }
+        }*/
         getLogger().info("SimpleHomes Enabled!");
     }
 
@@ -89,7 +89,7 @@ public class SimpleHomes extends JavaPlugin {
         getLogger().log(Level.INFO, "SimpleHomes Disabled!");
     }
 
-    private void loadUpdater() {
+    /*private void loadUpdater() {
         if (getConfig().getBoolean("AutoUpdater.Enabled")) {
             String mode = getConfig().getString("AutoUpdater.Mode");
             Updater.UpdateType updateType;
@@ -137,7 +137,7 @@ public class SimpleHomes extends JavaPlugin {
                     break;
             }
         }
-    }
+    }*/
 
     private void loadCommands() {
         this.getCommand("delhome").setExecutor(new DeleteHomeCommand(homeManager));

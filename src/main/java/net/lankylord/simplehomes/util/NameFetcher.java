@@ -1,16 +1,13 @@
 package net.lankylord.simplehomes.util;
 
-import com.google.common.collect.ImmutableList;
+//import com.google.common.collect.ImmutableList;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 public class NameFetcher implements Callable<Map<UUID, String>> {
@@ -20,12 +17,13 @@ public class NameFetcher implements Callable<Map<UUID, String>> {
     private final List<UUID> uuids;
 
     public NameFetcher(List<UUID> uuids) {
-        this.uuids = ImmutableList.copyOf(uuids);
+        //this.uuids = ImmutableList.copyOf(uuids);
+        this.uuids = Collections.unmodifiableList(uuids);
     }
 
     @Override
     public Map<UUID, String> call() throws Exception {
-        Map<UUID, String> uuidStringMap = new HashMap<UUID, String>();
+        Map<UUID, String> uuidStringMap = new HashMap<>();
         for (UUID uuid : uuids) {
             HttpURLConnection connection = (HttpURLConnection) new URL(PROFILE_URL + uuid.toString().replace("-", "")).openConnection();
             JSONObject response = (JSONObject) jsonParser.parse(new InputStreamReader(connection.getInputStream()));

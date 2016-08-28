@@ -28,7 +28,7 @@
  */
 package net.lankylord.simplehomes.storage;
 
-import com.google.common.io.Files;
+import java.nio.file.Files;
 import net.lankylord.simplehomes.SimpleHomes;
 import net.lankylord.simplehomes.configuration.ConfigManager;
 import net.lankylord.simplehomes.util.UUIDFetcher;
@@ -132,7 +132,7 @@ public class HomeFileManager {
             if (homesFile == null) {
                 homesFile = new File(instance.getDataFolder(), fileName);
             }
-            Files.copy(homesFile, oldFile);
+            Files.copy(homesFile.toPath(), oldFile.toPath());
             result.save(homesFile);
             reloadHomes();
             instance.getConfig().options().copyDefaults(true);

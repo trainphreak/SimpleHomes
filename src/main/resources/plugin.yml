@@ -1,7 +1,7 @@
 name: SimpleHomes
-version: ${version}
+version: 2.11
 description: Plugin that allows players to use homes.
-authors: [Lanky_Lord, cedeel]
+authors: [Lanky_Lord, cedeel, trainphreak]
 website: https://github.com/LankyLord/SimpleHomes
 
 main: net.lankylord.simplehomes.SimpleHomes
